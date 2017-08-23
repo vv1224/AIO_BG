@@ -19,4 +19,6 @@ public interface UserMapper {
     int selectTotal();
 
     List<User> selectUserList(PageUtil pageUtil);
+
+    void deleteUserByOne(Integer id);
 }

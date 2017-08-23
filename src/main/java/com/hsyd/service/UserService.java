@@ -11,4 +11,6 @@ public interface UserService {
     void insertUser(String name, String password, Integer roleId);
 
     PageUtil selectUserList(Integer pageIndex, Integer pageSize);
+
+    void deleteUserByOne(Integer id);
 }

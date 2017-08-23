@@ -22,7 +22,7 @@
 
 
     <select id="selectTotal" resultType="java.lang.Integer">
-        SELECT COUNT (*)
+        SELECT COUNT(*)
         FROM a_user
     </select>
 
@@ -31,5 +31,10 @@
         FROM a_user
         limit #{pageIndex}, #{pageSize}
     </select>
+
+    <delete id="deleteUserByOne" parameterType="java.lang.Integer">
+        DELETE FROM a_user
+        WHERE id = #{id}
+    </delete>
 
 </mapper>

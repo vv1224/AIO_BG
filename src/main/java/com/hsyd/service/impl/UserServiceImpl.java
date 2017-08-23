@@ -53,4 +53,11 @@ public class UserServiceImpl implements UserService {
 
         return pageUtil;
     }
+
+    @Override
+    public void deleteUserByOne(Integer id) {
+
+        userMapper.deleteUserByOne(id);
+
+    }
 }

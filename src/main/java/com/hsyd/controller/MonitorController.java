@@ -34,7 +34,8 @@ public class MonitorController {
      * @param uuid
      */
     @RequestMapping("/selectMonitorInfo")
-    public void selectMonitorInfo(HttpServletResponse response, @RequestParam("pageIndex")Integer pageIndex, @RequestParam("pageSize") Integer pageSize, @RequestParam(value = "uuid", defaultValue = "", required = false) String uuid){
+    public void selectMonitorInfo(HttpServletResponse response, @RequestParam("pageIndex")Integer pageIndex,
+                                  @RequestParam("pageSize") Integer pageSize, @RequestParam(value = "uuid", defaultValue = "", required = false) String uuid){
 
         List<Terminal> terminalList = new ArrayList<>();
         PageUtil pageUtil = monitorService.selectMonitorInfo(pageIndex, pageSize, uuid);

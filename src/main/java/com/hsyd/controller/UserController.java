@@ -1,5 +1,6 @@
 package com.hsyd.controller;
 
+import com.hsyd.dao.UserMapper;
 import com.hsyd.model.Terminal;
 import com.hsyd.model.User;
 import com.hsyd.service.UserService;
@@ -93,6 +94,16 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping("/deleteUserByOne")
+    @ResponseBody
+    public String deleteUser(@RequestParam("id") Integer id){
+
+        String message = "";
+        userService.deleteUserByOne(id);
+        message = "success";
+        return message;
     }
 
 }
