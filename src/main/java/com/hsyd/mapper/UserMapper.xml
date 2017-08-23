@@ -16,6 +16,20 @@
        WHERE name = #{name}
    </select>
 
-    
+    <insert id="insertUser">
+        INSERT INTO a_user (name, password, role_id) VALUES (#{name},#{password},#{roleId})
+    </insert>
+
+
+    <select id="selectTotal" resultType="java.lang.Integer">
+        SELECT COUNT (*)
+        FROM a_user
+    </select>
+
+    <select id="selectUserList" parameterType="com.hsyd.utils.PageUtil" resultType="com.hsyd.model.User">
+        SELECT *
+        FROM a_user
+        limit #{pageIndex}, #{pageSize}
+    </select>
 
 </mapper>
