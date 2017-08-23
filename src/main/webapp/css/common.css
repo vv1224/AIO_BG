@@ -1,0 +1,171 @@
+/*模块化样式*/
+
+body{
+    background-color: #F5F5F5;
+}
+a:hover{
+    cursor: pointer;
+}
+
+/*头部样式*/
+.headerQ{
+    /*头部轮框*/
+    position: fixed;
+    top: 0px;left: 0;right: 0;
+    z-index:999;
+    min-height: 40px;
+    background-color: #fafafa;
+    background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    background-repeat: repeat-x;
+    border-bottom: 1px solid #d4d4d4;
+    box-shadow: rgba(0,0,0,0.1) 0px 1px 10px 0px;
+}
+.user_menuQ{
+    /*登录用户按钮*/
+    position: absolute;
+    top:38px;
+    left:-110px;
+    border-radius: 5px;
+}
+.menuPersonQ{
+    display: block;
+    float: right;
+    width: 50px;
+    min-height:40px;
+    padding:0 10px;
+}
+.headerUserName{
+    color:#5EBD5E;
+}
+
+/*侧边栏*/
+.navQ{
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;/*圆角对a的影响*/
+}
+.navQ>li{
+    border-bottom: 1px dotted #dddddd;
+}
+.navQ>li>a{
+    color:#5EBD5E !important;
+}
+.navQ>li>a:hover,.navQ>li>a:active,.navQ>li>a.active{
+    background-color: #5EBD5E !important;
+    color:#fff !important;
+    transition: all 0.1s linear;
+}
+
+
+/*面包屑*/
+.breadcrumbQ{
+    /*background:#fff;*/
+    display:inline-block;
+    padding-left: 0;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+.breadcrumbQ li a{
+    color:#2DC3E8;
+    padding-left: 4px;
+}
+
+/*内容标题*/
+.searchTitleQ{
+    background-color: #51a351;
+    border-radius: 5px 5px 0 0;
+    padding: 6px 12px;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    line-height: 30px;
+    font-size: 18px;
+    font-weight: 300;
+    color: #fff;
+}
+
+/*盛放内容的容器白色背景和边框*/
+.boxQ{
+    padding:30px 20px;
+    background-color: #fff;
+    border:1px solid #E2E2E2;
+    border-top:none;
+    overflow: hidden;
+}
+.boxQ>.row{
+    margin: 0;
+}
+
+/*表格内容居中*/
+.qzq_table th,.qzq_table td{
+    text-align: center;
+}
+.qzq_table a:hover{
+    color:#51A351;
+}
+
+
+/*模态框*/
+.qzqModal,.qzqModalEdit{
+    zoom:0.8;
+    position:fixed;
+    z-index: 1000;
+    top:0;right:0;left:0;bottom:0;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+}
+
+.qzq_ModalForm{
+    background-color: #fff;
+    width:600px;
+    position: absolute;
+    top:50%;left:50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    padding:20px 30px;
+}
+.qzq_ModalForm>h5{
+    text-align: center;
+    font-size: 20px;
+    color:#449D44;
+}
+/*关闭模态框的×*/
+.qzqCloseModal{
+    position:absolute;
+    top:-13px;
+    right:-13px;
+    background-color: #0adc15;
+    color:#fff;
+    font-weight: 900;
+    width:25px;height:25px;
+    text-align: center;
+    line-height: 25px;
+    font-size:20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/*模态框中终端功能的边框*/
+.borderL{
+    border:1px solid #ddd;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+/*验证的样式*/
+.regQ{
+    color:red;
+    display:none;
+}
+
+
+/*页脚样式*/
+.footer{
+    text-align: center;
+    margin:50px auto;
+}
+
+

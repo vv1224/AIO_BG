@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hsyd.dao.TerminalMapper" >
+
+    <resultMap id="BaseResultMap" type="com.hsyd.model.Terminal" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="ip" property="ip" jdbcType="VARCHAR" />
+        <result column="terminal_model" property="terminalModel" jdbcType="VARCHAR" />
+        <result column="position" property="position" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="mac_address" property="macAddress" jdbcType="VARCHAR" />
+        <result column="link_man" property="linkMan" jdbcType="VARCHAR"/>
+        <result column="link_phone" property="linkPhone" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="base_column">
+        id,uuid,ip,terminal_model,position,status,mac_address,link_man,link_phone
+    </sql>
+
+    <select id="selectTotal" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM a_terminal
+        <if test="uuid != null and uuid != ''">
+            WHERE uuid LIKE N'%' #{uuid} '%'
+        </if>
+    </select>
+
+    <select id="selectMonitorInfo" parameterType="com.hsyd.utils.PageUtil" resultType="com.hsyd.model.Terminal">
+        SELECT *
+        FROM a_terminal
+        <if test="uuid != null and uuid != ''">
+            WHERE uuid LIKE N'%' #{uuid} '%'
+        </if>
+          limit #{pageIndex}, #{pageSize}
+    </select>
+
+</mapper>
