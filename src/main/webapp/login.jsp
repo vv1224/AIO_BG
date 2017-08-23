@@ -86,7 +86,24 @@ $("#submit").click(function(){
     if($("#uName").val()==""||$("#uPwd").val()==""){
         layer.msg("请将信息填写完整！",{icon: 7});
     }else{
-        window.location.href="index.jsp"
+        $.ajax({
+            type:"POST",
+            url:"${pageContext.request.contextPath}/login.do",
+            data:{
+                "name":$("#uName").val(),
+                "password":$("#uPwd").val(),
+            },
+            dataType:"json",
+            success:function(data){
+                console.log(data);
+                if(data=="success"){
+                    window.location.href="${pageContext.request.contextPath}/gotoIndex.do";
+                }
+            },
+            error:function(){
+                console.log("数据库请求失败！");
+            }
+        });
     }
 })
 

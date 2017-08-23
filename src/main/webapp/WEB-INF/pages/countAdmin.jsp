@@ -18,28 +18,11 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 </head>
 <body>
 
+
+
+
 <header class="headerQ">
-    <div class="row">
-        <div class="col-xs-6">
-            <h2 class="fl f18 lineH40 mL20">医院自助服务管理系统</h2>
-        </div>
-
-        <div class="col-xs-6">
-
-            <div class="btn-group fr">
-                <a  class="dropdown-toggle menuPersonQ lineH40" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="glyphicon glyphicon-user"></i>
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu user_menuQ">
-                    <li><a href="#">修改密码</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">退出登录</a></li>
-                </ul>
-            </div>
-            <p class="lineH40 fr mR10">您好：<span class="headerUserName">Admin</span></p>
-        </div>
-    </div>
+    <jsp:include page="header.jsp"></jsp:include>
 </header>
 
 <section class="container mT70">
@@ -93,9 +76,9 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                             <th>缴费总额</th>
                             <th>打印报告总数</th>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                             <tr>
-                                <td><input type="checkbox" name="message"/></td>
+                                <td><input type="checkbox" class="checkQ"  name="message"/></td>
                                 <td>1</td>
                                 <td>2017/7/4</td>
                                 <td>12222</td>
@@ -106,7 +89,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                                 <td>63212</td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" name="message"/></td>
+                                <td><input type="checkbox" class="checkQ" name="message"/></td>
                                 <td>2</td>
                                 <td>2017/7/5</td>
                                 <td>12332</td>
@@ -117,7 +100,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                                 <td>63902</td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" name="message"/></td>
+                                <td><input type="checkbox" class="checkQ" name="message"/></td>
                                 <td>3</td>
                                 <td>2017/7/6</td>
                                 <td>12348</td>
@@ -143,11 +126,8 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
     </div>
 </section>
-<footer class="">
-    <div class="footer">
-        <img src="img/195-60.png"/>
-        <p class="mT10">&copy;北京华生医叮版权所有 2017 | 京ICP备17034868-2 copyright</p>
-    </div>
+<footer>
+    <jsp:include page="footer.jsp"></jsp:include>
 </footer>
 
 
@@ -187,6 +167,27 @@ $("#seleAll").change(function () {
         }
     }
 });
+//表格中的全选事件
++function(){
+    $("#tableBody").on('click','.checkQ',function(){
+        var checkArr=$(".checkQ");
+        var flag=0;//标记：标记是否全选，如果全选为0，没有全选为1
+        for(var i=0;i<checkArr.length;i++){
+            console.log(checkArr[i].checked);
+            if(!checkArr[i].checked){
+                flag=1;
+            }
+        }
+        //判断标记：是否为全选来控制全选按钮的选择
+        if(flag==1){
+            $("#seleAll").prop("checked",false);
+        }else if(flag==0){
+            $("#seleAll").prop("checked",true);
+        }
+    })
+}();
+
+
 
 //侧边栏加载样式
 sideOn("统计管理");

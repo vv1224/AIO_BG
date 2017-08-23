@@ -6,6 +6,11 @@ package com.hsyd.model;
 public class SearchModel {
 
     private String uuid;
+    private String equipmentName;
+    private Integer status;             //设备状态 0：正常 1：错误
+    private String errorTime;
+    private String errorInfo;
+    private String ip;
 
     public String getUuid() {
         return uuid;
@@ -13,5 +18,45 @@ public class SearchModel {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getEquipmentName() {
+        return equipmentName;
+    }
+
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getErrorTime() {
+        return errorTime;
+    }
+
+    public void setErrorTime(String errorTime) {
+        this.errorTime = errorTime;
+    }
+
+    public String getErrorInfo() {
+        return errorInfo;
+    }
+
+    public void setErrorInfo(String errorInfo) {
+        this.errorInfo = errorInfo;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

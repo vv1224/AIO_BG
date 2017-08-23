@@ -1,6 +1,7 @@
 package com.hsyd.service.impl;
 
 import com.hsyd.dao.TerminalMapper;
+import com.hsyd.model.SearchModel;
 import com.hsyd.model.Terminal;
 import com.hsyd.service.MonitorService;
 import com.hsyd.utils.PageUtil;
@@ -38,5 +39,11 @@ public class MonitorServiceImpl implements MonitorService {
         }
 
         return pageUtil;
+    }
+
+    @Override
+    public List<SearchModel> selectMonitorDetail(String uuid) {
+
+        return terminalMapper.selectMonitorDetail(uuid);
     }
 }

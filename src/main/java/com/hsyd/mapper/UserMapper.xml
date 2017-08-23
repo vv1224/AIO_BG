@@ -29,7 +29,7 @@
     <select id="selectUserList" parameterType="com.hsyd.utils.PageUtil" resultType="com.hsyd.model.User">
         SELECT *
         FROM a_user
-        limit #{pageIndex}, #{pageSize}
+        limit #{start}, #{pageSize}
     </select>
 
     <delete id="deleteUserByOne" parameterType="java.lang.Integer">

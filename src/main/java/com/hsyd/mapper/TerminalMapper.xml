@@ -14,6 +14,15 @@
         <result column="link_phone" property="linkPhone" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="BaseResultMap2" type="com.hsyd.model.Equipment">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="equipment_name" property="equipmentName" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="error_time" property="errorTime" jdbcType="TIMESTAMP"/>
+        <result column="error_info" property="errorInfo" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <sql id="base_column">
         id,uuid,ip,terminal_model,position,status,mac_address,link_man,link_phone
     </sql>
@@ -32,7 +41,15 @@
         <if test="uuid != null and uuid != ''">
             WHERE uuid LIKE N'%' #{uuid} '%'
         </if>
-          limit #{pageIndex}, #{pageSize}
+          limit #{start}, #{pageSize}
     </select>
+
+    <!--<select id="selectMonitorDetail" parameterType="java.lang.String" resultMap="com.hsyd.model.SearchModel">-->
+        <!--SELECT b.uuid,b.equipment_name,b.status,b.error_time,b.error_info,a.ip-->
+        <!--FROM a_equipment b-->
+        <!--LEFT JOIN a_terminal a-->
+        <!--ON b.uuid = a.uuid-->
+        <!--WHERE b.uuid = #{uuid}-->
+    <!--</select>-->
 
 </mapper>

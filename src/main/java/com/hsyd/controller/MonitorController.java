@@ -1,5 +1,6 @@
 package com.hsyd.controller;
 
+import com.hsyd.model.SearchModel;
 import com.hsyd.model.Terminal;
 import com.hsyd.service.MonitorService;
 import com.hsyd.utils.PageUtil;
@@ -56,4 +57,12 @@ public class MonitorController {
             e.printStackTrace();
         }
     }
+
+    /*@RequestMapping("/selectMonitorInfo")
+    public void selectMonitorDetail(HttpServletResponse response,@RequestParam("uuid") String uuid){
+
+        List<SearchModel> searchModelList = new ArrayList<>();
+        searchModelList = monitorService.selectMonitorDetail(uuid);
+
+    }*/
 }

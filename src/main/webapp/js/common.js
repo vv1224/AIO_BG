@@ -6,6 +6,9 @@ function qzqCloseEditModal() {
     $(".qzqModalEdit").fadeToggle();
 }
 
+var path=window.location.host;
+console.log(path);
+
 //侧边栏
 +function(){
     var asideData={
@@ -13,32 +16,32 @@ function qzqCloseEditModal() {
         "list": [
             {
                 "name": "终端管理",
-                "url": "index.jsp",
+                "url": "gotoIndex.do",
                 "child": []
             },
             {
                 "name": "终端配置",
-                "url": "deviceConfigure.jsp",
+                "url": "gotoDeviceConfigure.do",
                 "child": []
             },
             {
                 "name": "设备监控",
-                "url": "deviceMonitor.jsp",
+                "url": "gotoDeviceMonitor.do",
                 "child": []
             },
             {
                 "name": "统计管理",
-                "url": "countAdmin.jsp",
+                "url": "gotoCountAdmin.do",
                 "child": []
             },
             {
                 "name": "用户管理",
-                "url": "userAdmin.jsp",
+                "url": "gotoUserAdmin.do",
                 "child": []
             },
             {
                 "name": "消息管理",
-                "url": "messageAdmin.jsp",
+                "url": "gotoMessageAdmin.do",
                 "child": []
             }
         ]
