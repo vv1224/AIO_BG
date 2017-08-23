@@ -26,6 +26,13 @@ public class MonitorController {
     @Autowired
     private MonitorService monitorService;
 
+    /**
+     * 查询设备监控列表
+     * @param response
+     * @param pageIndex
+     * @param pageSize
+     * @param uuid
+     */
     @RequestMapping("/selectMonitorInfo")
     public void selectMonitorInfo(HttpServletResponse response, @RequestParam("pageIndex")Integer pageIndex, @RequestParam("pageSize") Integer pageSize, @RequestParam(value = "uuid", defaultValue = "", required = false) String uuid){
 
