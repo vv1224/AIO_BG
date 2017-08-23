@@ -27,7 +27,7 @@ public class UserController {
 
         String message = "";
         String password2 = userService.selectUser(name);
-        if(password2 == password){
+        if(password2.equals(password) ){
             message = "success";
         }else {
             message = "您好，您的登录有误，请重新登录";
