@@ -575,7 +575,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             //layer.msg("添加成功！",{icon: 1});
             $.ajax({
                 type:"post",
-                url:"${pageContext.request.contextPath}.updateTerminal.do",
+                url:"${pageContext.request.contextPath}/updateTerminal.do",
                 data:{
                     "uuid":uuId,
                     "ip":$("#deviceIpEdit").val(),
@@ -585,9 +585,15 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 dataType:"json",
                 success:function(data){
                     console.log(data);
+                    if(data=="success"){
+                        layer.msg("数据修改成功！",{icon: 1});
+                        setTimeout(function(){
+                            window.location.reload();
+                        },2000);
+                    }
                 },
                 error:function(){
-                    console.log("数据请求失败！");
+                    layer.msg("数据修改失败！",{icon: 2});
                 }
             })
         }

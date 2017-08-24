@@ -53,7 +53,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                                 <th>时间</th>
                                 <th>操作</th>
                             </thead>
-                            <tbody>
+                            <tbody id="tableBody">
                             <tr>
                                 <td><input type="checkbox" name="message"/></td>
                                 <td>1</td>
@@ -96,6 +96,22 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 </div>
 
 
+                <!--new分页-->
+                <div id="qzq_fy" id="pagination-sv">
+                    <ul class="pagination">
+                        <li id="firstPage" class="qzq_firstPage">首页</li>
+                        <li id="upPage">上一页</li>
+                        <li id="currentPage" class="active">1</li>
+                        <li id="nextPage">下一页 </li>
+                        <li id="lastPage">尾页</li>
+                        <li id="allPageNumber" class="qzq_totalPage sjm_widthPage">共1页</li>
+                        <li id="inputPart" class="qzq_fy_search">
+                            <input type="tel" id="wherePage" min="1" class="form-control qzq_input">
+                            <button class="gobtn btn qzq_gobtn" id="goToPage">跳转</button>
+                        </li>
+                    </ul>
+                </div>
+
 
 
             </div>
@@ -114,16 +130,117 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <script src="js/layer/layer.js"></script>
 <script src="js/jedate/jedate.js"></script>
 <script src="js/common.js"></script>
-
+<script src="js/page/page.js"></script>
 
 <script>
-    function delMessage(id){
-        console.log(id);
-        layer.confirm('是否要删除'+id+'消息？', {
+    /* *****************分页****************************** */
+    // [请设置请求参数]...
+    var pageIndex = "1";
+    var pageSize = 5;//每页条数
+    var pageCount;
+
+    // [初始化页面]...
+    showall("first");
+
+
+    // [发送请求请配置好参数和请求地址]...
+    function sendAjax() {
+        //发送ajax
+        $.ajax({//后台搜索所有log信息
+            type: 'post',
+            dataType: 'json',
+            data:{
+                "pageIndex":pageIndex,
+                "pageSize":pageSize,
+            },
+            url:"${pageContext.request.contextPath}/selectMessageList.do",
+            success: show,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //var actionName = "/user/selectRegisterUser.do";
+                //excepinfoShow(XMLHttpRequest, textStatus, errorThrown,actionName);
+                console.log("数据库连接失败!");
+            }
+        });//end ajax
+
+    }
+
+    // [请处理响应数据]...
+    function show(json) {
+        $("#tableBody").html("");
+        $(".otherPage").remove();
+        $("#currentPage").remove();
+        console.log(json);
+        var pageUtil = json.pageUtil;
+        pageUtil = pageUtil[0];
+        var list = pageUtil.resultList;
+        var message = json.message;
+        pageCount = pageUtil.pageCount;
+        pageIndex = pageUtil.pageIndex;
+        pageSize=pageUtil.pageSize;
+        $(getStr(createPageBtn(pageIndex, pageCount), pageIndex)).insertAfter($("#upPage"));
+        $("#allPageNumber").html("共" + pageCount + "页");
+        $("#currentPage").html("").append(pageIndex);
+        if (message == "nodata") {
+            $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+        } else if (message == "success") {
+            //console.log(list);
+            if (list == null || list.length <= 0) {
+                $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+                return false;
+            }
+            if (list != null && list.length > 0) {
+                var html="";
+                for (var i = 0; i < list.length; i++) {
+                    console.log(list[i]);
+                    // 操作
+
+                    html +="<tr>";
+                    html +="<td><input type='checkbox' name='message' class='checkQ'/></td>";
+                    html +="<td>"+list[i].uuid+"</td>";
+                    html +="<td>"+list[i].messageContent+"</td>";
+                    html +="<td>"+list[i].messageTime+"</td>";
+                    html +="<td><a href='${pageContext.request.contextPath}/gotoMessageDetail.do?uuid="+ list[i].uuid +"'>查看详情</a>&nbsp;&nbsp;<a onclick='delMessage("+list[i].uuid+")'>删除</a></td>";
+                    html +="</tr>";
+                }
+                $("#tableBody").html(html);
+            }
+        }
+    }
+
+    /**************************************分页完***********************/
+
+
+
+
+
+
+
+    function delMessage(uuid){
+        console.log(uuid);
+        layer.confirm('是否要删除'+uuid+'消息？', {
             btn: ['确认', '取消'] //可以无限个按钮
         }, function(index, layero){
             //确定事件
-            console.log("删除成功!");
+            $.ajax({
+                type:"get",
+                url:"${pageContext.request.contextPath}/deleteMessageByUuid.do?uuid="+uuid,
+//                data:{
+//                    "uuid":uuid
+//                },
+                success:function(data){
+                    console.log(data);
+                    if(data=="success"){
+                        layer.msg("删除成功！",{icon: 1});
+                        setTimeout(function(){
+                            window.location.reload();
+                        },2000);
+
+                    }
+                },
+                error:function(){
+                    layer.msg("删除失败！",{icon: 2});
+                }
+            });
         }, function(index){
             //取消事件
         });
@@ -147,6 +264,23 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             }
         }
     });
+    $("#tableBody").on('click','.checkQ',function(){
+        var checkArr=$(".checkQ");
+        var flag=0;//标记：标记是否全选，如果全选为0，没有全选为1
+        for(var i=0;i<checkArr.length;i++){
+            console.log(checkArr[i].checked);
+            if(!checkArr[i].checked){
+                flag=1;
+            }
+        }
+        //判断标记：是否为全选来控制全选按钮的选择
+        if(flag==1){
+            $("#seleAll").prop("checked",false);
+        }else if(flag==0){
+            $("#seleAll").prop("checked",true);
+        }
+    });
+
     //侧边栏加载样式
     sideOn("消息管理");
 </script>

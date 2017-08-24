@@ -15,7 +15,7 @@
     </select>
 
     <select id="selectMonitorInfo" parameterType="com.hsyd.utils.PageUtil" resultType="com.hsyd.model.Message">
-        SELECT *
+        SELECT id, message_content AS messageContent, message_time AS messageTime,uuid
         FROM a_message
         ORDER BY message_time DESC
         limit #{start}, #{pageSize}

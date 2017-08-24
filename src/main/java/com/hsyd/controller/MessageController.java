@@ -8,6 +8,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,8 +28,15 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
+    /**
+     * 查询消息列表
+     * @param response
+     * @param pageIndex
+     * @param pageSize
+     */
     @RequestMapping("/selectMessageList")
-    public void selectMessageList(HttpServletResponse response, @RequestParam("pageIndex") Integer pageIndex, @RequestParam("pageSize") Integer pageSize){
+    public void selectMessageList(HttpServletResponse response, @RequestParam("pageIndex") Integer pageIndex,
+                                  @RequestParam("pageSize") Integer pageSize){
         List<Message> messageList = new ArrayList<>();
         PageUtil pageUtil = messageService.selectMessageList(pageIndex, pageSize);
         String message = "";
@@ -67,18 +75,19 @@ public class MessageController {
         return messagePojo;
     }
 
+    /**
+     * 删除消息
+     * @param uuid
+     * @return
+     */
     @RequestMapping("deleteMessageByUuid")
+    @ResponseBody
     public String deleteMessageByUuid(@RequestParam("uuid") String uuid){
         String message = "";
 
-        try {
             messageService.deleteMessageByUuid(uuid);
             message = "success";
-        }catch (Exception e){
-            message = "error";
             return message;
-        }
-        return message;
     }
 
 }

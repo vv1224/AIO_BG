@@ -288,7 +288,7 @@ $("#submit").click(function(){
             url:"${pageContext.request.contextPath}/insertTerminal.do",
             data:{
                 "ip":$("#deviceIp").val(),
-                "termainalModel":$("#deviceType option:selected").val(),//终端型号
+                "terminalModel":$("#deviceType option:selected").val(),//终端型号
                 "position":$("#deviceAddr").val(),
                 "status":$("#deviceState option:selected").val(),
                 "macAddress":$("#deviceMAC").val(),
