@@ -44,6 +44,17 @@ public class SkipPageController {
     }
 
     /**
+     * 终端新增
+     * @param modelAndView
+     * @return
+     */
+    @RequestMapping("/gotoDeviceAdd")
+    public Object gotoDeviceAdd(ModelAndView modelAndView){
+        modelAndView.setViewName("deviceAdd");
+        return modelAndView;
+    }
+
+    /**
      * 终端配置
      * @param modelAndView
      * @return

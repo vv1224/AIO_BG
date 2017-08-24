@@ -21,4 +21,6 @@ public interface UserMapper {
     List<User> selectUserList(PageUtil pageUtil);
 
     void deleteUserByOne(Integer id);
+
+    void updateUser(User user);
 }

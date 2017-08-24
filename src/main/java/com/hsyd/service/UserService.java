@@ -1,5 +1,6 @@
 package com.hsyd.service;
 
+import com.hsyd.model.User;
 import com.hsyd.utils.PageUtil;
 
 /**
@@ -13,4 +14,7 @@ public interface UserService {
     PageUtil selectUserList(Integer pageIndex, Integer pageSize);
 
     void deleteUserByOne(Integer id);
+
+    //修改用户
+    void updateUser(User user);
 }

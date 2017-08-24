@@ -106,8 +106,50 @@ public class UserController {
     public String deleteUser(@RequestParam("id") Integer id){
 
         String message = "";
-        userService.deleteUserByOne(id);
+        try {
+            userService.deleteUserByOne(id);
+        }catch (Exception e){
+            message = "error";
+            e.printStackTrace();
+            return message;
+        }
+
         message = "success";
+        return message;
+    }
+
+    /**
+     * 编辑
+     * @param name
+     * @param password
+     * @param id
+     * @param rePassword
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("updateUser")
+    @ResponseBody
+    public String updateUser(@RequestParam("name") String name, @RequestParam("password") String password,@RequestParam("id") Integer id,
+                             @RequestParam("rePassword") String rePassword,@RequestParam("roleId") Integer roleId){
+
+        String message = "";
+        if(!password.equals(rePassword)){
+            message = "您两次输入的密码不一致，请重新输入";
+            return message;
+        }
+        User user = new User();
+        user.setId(id);
+        user.setName(name);
+        user.setPassword(password);
+        user.setRoleId(roleId);
+        try {
+            userService.updateUser(user);
+            message = "success";
+        }catch (Exception e){
+            message = "error";
+            e.printStackTrace();
+            return message;
+        }
         return message;
     }
 

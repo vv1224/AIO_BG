@@ -22,4 +22,12 @@ public interface TerminalMapper {
 
     //查询详情
     List<SearchModel> selectMonitorDetail(String uuid);
+
+    //修改终端
+    void updateTerminal(Terminal terminal);
+
+    //新增终端
+    void insertTerminal(Terminal terminal);
+
+    void deleteTerminal(String uuid);
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hsyd.dao.MessageMapper" >
+
+    <resultMap id="BaseResultMap" type="com.hsyd.model.Message" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="message_content" property="messageContent" jdbcType="VARCHAR" />
+        <result column="message_time" property="messageTime" jdbcType="TIMESTAMP" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectTotal" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM a_message
+    </select>
+
+    <select id="selectMonitorInfo" parameterType="com.hsyd.utils.PageUtil" resultType="com.hsyd.model.Message">
+        SELECT *
+        FROM a_message
+        ORDER BY message_time DESC
+        limit #{start}, #{pageSize}
+    </select>
+
+</mapper>

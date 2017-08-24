@@ -52,4 +52,31 @@
         WHERE b.uuid = #{uuid}
     </select>
 
+    <update id="updateTerminal" parameterType="com.hsyd.model.Terminal">
+        update a_terminal
+        <set >
+            <if test="ip != null and ip != '' " >
+                ip = #{ip},
+            </if>
+            <if test="terminalModel != null and terminalModel != '' " >
+                terminal_model = #{terminalModel},
+            </if>
+            <if test="position != null and position != '' " >
+                position = #{position}
+            </if>
+        </set>
+        where uuid = #{uuid}
+    </update>
+
+    <insert id="insertTerminal" parameterType="com.hsyd.model.Terminal">
+        INSERT INTO a_terminal (uuid,ip,terminal_model,position,status,mac_address,link_man,link_phone)
+        VALUES (#{uuid},#{ip},#{terminal_model},#{position},#{status},#{mac_address},#{link_man},#{link_phone},)
+    </insert>
+
+    <!-- 删除终端 -->
+    <delete id="deleteTerminal" parameterType="java.lang.String">
+        DELETE FROM a_terminal
+        WHERE uuid = #{uuid}
+    </delete>
+
 </mapper>

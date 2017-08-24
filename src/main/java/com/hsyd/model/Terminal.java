@@ -10,9 +10,9 @@ public class Terminal {
     private String ip;
     private String terminalModel;   //终端型号
     private String position;        //终端所在位置
-    private String status;          //终端使用状态
+    private Integer status;          //终端使用状态
     private String macAddress;      //mac地址
-    private String linkMam;         //联系人
+    private String linkMan;         //联系人
     private Integer linkPhone;      //联系电话
 
     public Integer getId() {
@@ -55,11 +55,11 @@ public class Terminal {
         this.position = position;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -71,12 +71,12 @@ public class Terminal {
         this.macAddress = macAddress;
     }
 
-    public String getLinkMam() {
-        return linkMam;
+    public String getLinkMan() {
+        return linkMan;
     }
 
-    public void setLinkMam(String linkMam) {
-        this.linkMam = linkMam;
+    public void setLinkMan(String linkMan) {
+        this.linkMan = linkMan;
     }
 
     public Integer getLinkPhone() {
