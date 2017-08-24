@@ -2,6 +2,8 @@ package com.hsyd.utils;
 
 import java.util.List;
 import com.hsyd.model.SearchModel;
+import com.hsyd.model.TradingLog;
+
 /**
  * Created by vie1224 on 2017/8/22.
  */
@@ -15,9 +17,18 @@ public class PageUtil<T> {
         private Integer start = 0;      // 起始页
         private List<T> resultList;    // 结果集
         private SearchModel searchModel;// 查询条件
+        private TradingLog tradingLog;  //tradingLog查询条件
         private Integer endFlag;        // 结束页标记
         private boolean isPage=true;   // 是否分页
         private String uuid;
+
+    public TradingLog getTradingLog() {
+        return tradingLog;
+    }
+
+    public void setTradingLog(TradingLog tradingLog) {
+        this.tradingLog = tradingLog;
+    }
 
     public String getUuid() {
         return uuid;

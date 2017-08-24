@@ -44,12 +44,12 @@
           limit #{start}, #{pageSize}
     </select>
 
-    <!--<select id="selectMonitorDetail" parameterType="java.lang.String" resultMap="com.hsyd.model.SearchModel">-->
-        <!--SELECT b.uuid,b.equipment_name,b.status,b.error_time,b.error_info,a.ip-->
-        <!--FROM a_equipment b-->
-        <!--LEFT JOIN a_terminal a-->
-        <!--ON b.uuid = a.uuid-->
-        <!--WHERE b.uuid = #{uuid}-->
-    <!--</select>-->
+    <select id="selectMonitorDetail" parameterType="java.lang.String" resultType="com.hsyd.model.SearchModel">
+        SELECT b.uuid,b.equipment_name,b.status,b.error_time,b.error_info ,a.ip
+        FROM a_equipment b
+        left join a_terminal a
+        ON b.uuid = a.uuid
+        WHERE b.uuid = #{uuid}
+    </select>
 
 </mapper>

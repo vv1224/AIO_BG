@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -58,11 +59,19 @@ public class MonitorController {
         }
     }
 
-    /*@RequestMapping("/selectMonitorInfo")
-    public void selectMonitorDetail(HttpServletResponse response,@RequestParam("uuid") String uuid){
+    /**
+     * 查询监控设备详情
+     * @param response
+     * @param uuid
+     * @return
+     */
+    @RequestMapping("/selectMonitorDetail")
+    @ResponseBody
+    public List<SearchModel> selectMonitorDetail(HttpServletResponse response,@RequestParam("uuid") String uuid){
 
         List<SearchModel> searchModelList = new ArrayList<>();
         searchModelList = monitorService.selectMonitorDetail(uuid);
 
-    }*/
+        return searchModelList;
+    }
 }

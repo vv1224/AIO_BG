@@ -96,6 +96,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 删除单个用户
+     * @param id
+     * @return
+     */
     @RequestMapping("/deleteUserByOne")
     @ResponseBody
     public String deleteUser(@RequestParam("id") Integer id){

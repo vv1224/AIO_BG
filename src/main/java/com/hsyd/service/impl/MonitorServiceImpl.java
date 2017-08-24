@@ -23,9 +23,9 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public PageUtil selectMonitorInfo(Integer pageIndex, Integer pageSize, String uuid) {
+
         List<Terminal> terminalList = new ArrayList<>();
         PageUtil pageUtil = new PageUtil();
-
         try {
             pageUtil.setPageSize(pageSize);
             int rows = terminalMapper.selectTotal(uuid);
@@ -37,7 +37,6 @@ public class MonitorServiceImpl implements MonitorService {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         return pageUtil;
     }
 

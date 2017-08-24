@@ -4,12 +4,14 @@ import com.hsyd.model.SearchModel;
 import com.hsyd.model.Terminal;
 import com.hsyd.utils.PageUtil;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by vie1224 on 2017/8/22.
  */
+@Repository
 public interface TerminalMapper {
 
     //查询总数
