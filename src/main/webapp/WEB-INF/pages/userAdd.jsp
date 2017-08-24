@@ -75,8 +75,8 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                         <div class="col-xs-8">
                             <select class="form-control disInlineB w300" id="userRole">
                                 <option value="-1">--请选择用户类型--</option>
-                                <option value="1">管理员</option>
-                                <option value="2">普通用户</option>
+                                <option value="0">管理员</option>
+                                <option value="1">普通用户</option>
                             </select>
                             <span class="userRoleReg regQ"></span>
                         </div>
@@ -167,6 +167,28 @@ $("#submit").click(function(){
         layer.msg("请将内容填写完整！",{icon: 2});
     }else{
         layer.msg("提交成功！",{icon: 1});
+        $.ajax({
+            type:'post',
+            url:'${pageContext.request.contextPath}/insertUser.do',
+            data:{
+                "name":$("#userName").val(),
+                "password":$("#uPwd").val(),
+                "rePassword":$("#uPwdOk").val(),
+                "roleId":$("#userRole option:selected").val()
+            },
+            success:function(data){
+                console.log(data);
+                if(data=="success"){
+                    layer.msg("用户添加成功！",{icon: 1});
+                    setTimeout(function(){
+                        window.location.href="${pageContext.request.contextPath}/gotoUserAdmin.do";
+                    },2000);
+                }
+            },
+            error:function(){
+                layer.msg("数据库请求失败！",{icon: 2});
+            }
+        })
     }
 })
 

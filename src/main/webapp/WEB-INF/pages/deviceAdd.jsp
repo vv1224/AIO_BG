@@ -38,7 +38,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <div class="mB0 row">
             <i class="glyphicon glyphicon-home"></i>&nbsp;
             <ul class="breadcrumb breadcrumbQ">
-                <li><a href="index.jsp">终端管理</a></li>
+                <li><a href="${pageContext.request.contextPath}/gotoIndex.do">终端管理</a></li>
                 <li class="active">新增终端</li>
             </ul>
         </div>
@@ -171,7 +171,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                     </div>
                     <div class="form-group textC mT30">
                         <a id="submit" class="btn btn-success w100">确定</a>
-                        <a href="index.jsp" class="btn btn-warning w100">取消</a>
+                        <a href="${pageContext.request.contextPath}/gotoIndex.do" class="btn btn-warning w100">取消</a>
                     </div>
                 </div>
         </div>

@@ -6,8 +6,6 @@ function qzqCloseEditModal() {
     $(".qzqModalEdit").fadeToggle();
 }
 
-var path=window.location.host;
-console.log(path);
 
 //侧边栏
 +function(){
@@ -18,6 +16,11 @@ console.log(path);
                 "name": "终端管理",
                 "url": "gotoIndex.do",
                 "child": []
+            },
+            {
+                "name":"交易日志",
+                "url":"gotoTransactionLog.do",
+                "child":[]
             },
             {
                 "name": "终端配置",
@@ -51,7 +54,9 @@ console.log(path);
         //console.log(asideData.list[i]);
         if (asideData.list[i].name == "终端管理") {
             html = "<i class='fa fa-television fa-lg'></i>终端管理"
-        } else if (asideData.list[i].name == "终端配置") {
+        } else if(asideData.list[i].name == "交易日志"){
+            html = "<i class='fa fa-file-powerpoint-o fa-lg'></i>交易日志"
+        }else if (asideData.list[i].name == "终端配置") {
             html = "<i class='fa fa-codiepie fa-lg'></i>终端配置"
         } else if (asideData.list[i].name == "设备监控") {
             html = "<i class='fa fa-cloud fa-lg'></i>设备监控"

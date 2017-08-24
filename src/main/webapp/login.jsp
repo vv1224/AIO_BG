@@ -22,6 +22,8 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             background-image: url("./img/07.png");
             background-repeat: no-repeat;
             background-position: center;
+            background-size:cover;
+
         }
         .box{
             width:450px;
@@ -54,6 +56,10 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             background-color: #488308;
             color: #fff;
         }
+        footer{
+            text-align: center;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
@@ -76,7 +82,13 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             <a id="submit" class="btn disBlock mT30 f16">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
         </div>
 
+        <footer>
+            <img src="img/195-60.png"/>
+            <p class="mT10">&copy;北京华生医叮版权所有 2017 | 京ICP备17034868-2 copyright</p>
+        </footer>
     </div>
+
+
 </div>
 <script src="js/jquery-2.2.3.js"></script>
 <script src="js/layer/layer.js"></script>
@@ -98,6 +110,8 @@ $("#submit").click(function(){
                 console.log(data);
                 if(data=="success"){
                     window.location.href="${pageContext.request.contextPath}/gotoIndex.do";
+                }else{
+                    layer.msg("密码错误，请查阅！",{icon: 2});
                 }
             },
             error:function(){

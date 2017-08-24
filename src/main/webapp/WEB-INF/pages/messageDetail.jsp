@@ -36,7 +36,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <div class="mB0 row">
             <i class="glyphicon glyphicon-home"></i>&nbsp;
             <ul class="breadcrumb breadcrumbQ">
-                <li><a href="userAdmin.jsp">消息管理</a></li>
+                <li><a href="${pageContext.request.contextPath}/gotoUserAdmin.do">消息管理</a></li>
                 <li class="active">消息详情</li>
             </ul>
         </div>

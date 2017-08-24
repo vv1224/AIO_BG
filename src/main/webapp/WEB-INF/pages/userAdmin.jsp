@@ -43,7 +43,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 用户管理
             </div>
             <div class="boxQ">
-                <a href="userAdd.jsp" type="button" class="btn btn-success mB20"> <i class="glyphicon glyphicon glyphicon-plus"></i> 新增</a>
+                <a href="${pageContext.request.contextPath}/gotoUserAdd.do" type="button" class="btn btn-success mB20"> <i class="glyphicon glyphicon glyphicon-plus"></i> 新增</a>
                 <!-- 查询列表-->
                 <div class="row mT10">
                     <div class="table-responsive">
@@ -56,40 +56,18 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                                 <th>角色</th>
                                 <th>操作</th>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td><input type="checkbox" name="userSele"/></td>
-                                <td>1</td>
-                                <td>张三</td>
-                                <td>2017/06/12</td>
-                                <td>管理员</td>
-                                <td>
-                                    <a href="javascript:qzqCloseModal();">编辑</a>
-                                    <a onclick="delUser(1)">删除</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" name="userSele"/></td>
-                                <td>2</td>
-                                <td>李四</td>
-                                <td>2017/06/23</td>
-                                <td>普通用户</td>
-                                <td>
-                                    <a href="javascript:qzqCloseModal();">编辑</a>
-                                    <a onclick="delUser(2)">删除</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" name="userSele"/></td>
-                                <td>3</td>
-                                <td>王五</td>
-                                <td>2017/07/12</td>
-                                <td>管理员</td>
-                                <td>
-                                    <a href="javascript:qzqCloseModal();">编辑</a>
-                                    <a onclick="delUser(3)">删除</a>
-                                </td>
-                            </tr>
+                            <tbody id="tableBody">
+                                <tr>
+                                    <td><input type="checkbox" name="userSele"/></td>
+                                    <td>1</td>
+                                    <td>张三</td>
+                                    <td>2017/06/12</td>
+                                    <td>管理员</td>
+                                    <td>
+                                        <a href="javascript:qzqCloseModal();">编辑</a>
+                                        <a onclick="delUser(1)">删除</a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -103,6 +81,21 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 
 
+                <!--new分页-->
+                <div id="qzq_fy" id="pagination-sv">
+                    <ul class="pagination">
+                        <li id="firstPage" class="qzq_firstPage">首页</li>
+                        <li id="upPage">上一页</li>
+                        <li id="currentPage" class="active">1</li>
+                        <li id="nextPage">下一页 </li>
+                        <li id="lastPage">尾页</li>
+                        <li id="allPageNumber" class="qzq_totalPage sjm_widthPage">共1页</li>
+                        <li id="inputPart" class="qzq_fy_search">
+                            <input type="tel" id="wherePage" min="1" class="form-control qzq_input">
+                            <button class="gobtn btn qzq_gobtn" id="goToPage">跳转</button>
+                        </li>
+                    </ul>
+                </div>
 
             </div>
         </div>
@@ -167,21 +160,114 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <script src="js/layer/layer.js"></script>
 <script src="js/jedate/jedate.js"></script>
 <script src="js/common.js"></script>
-
+<script src="js/page/page.js"></script>
 
 <script>
+    /* *****************分页****************************** */
+    // [请设置请求参数]...
+    var pageIndex = "1";
+    var pageSize = 5;//每页条数
+    var pageCount;
+
+    // [初始化页面]...
+    showall("first");
+
+
+    // [发送请求请配置好参数和请求地址]...
+    function sendAjax() {
+        //发送ajax
+        $.ajax({//后台搜索所有log信息
+            type: 'post',
+            dataType: 'json',
+            data:{
+                "pageIndex":pageIndex,
+                "pageSize":pageSize
+            },
+            url:"${pageContext.request.contextPath}/selectUserList.do",
+            success: show,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //var actionName = "/user/selectRegisterUser.do";
+                //excepinfoShow(XMLHttpRequest, textStatus, errorThrown,actionName);
+                console.log("数据库连接失败!");
+            }
+        });//end ajax
+
+    }
+
+    // [请处理响应数据]...
+    function show(json) {
+        $("#tableBody").html("");
+        $(".otherPage").remove();
+        $("#currentPage").remove();
+        console.log(json);
+        var pageUtil = json.pageUtil;
+        pageUtil = pageUtil[0];
+        var list = pageUtil.resultList;
+        var message = json.message;
+        pageCount = pageUtil.pageCount;
+        pageIndex = pageUtil.pageIndex;
+        pageSize=pageUtil.pageSize;
+        $(getStr(createPageBtn(pageIndex, pageCount), pageIndex)).insertAfter($("#upPage"));
+        $("#allPageNumber").html("共" + pageCount + "页");
+        $("#currentPage").html("").append(pageIndex);
+        if (message == "nodata") {
+            $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+        } else if (message == "success") {
+            //console.log(list);
+            if (list == null || list.length <= 0) {
+                $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+                return false;
+            }
+            if (list != null && list.length > 0) {
+                var html="";
+                for (var i = 0; i < list.length; i++) {
+                    console.log(list[i]);
+                    // 操作
+                    html +="<tr>";
+                    html +="<td><input type='checkbox' name='userSele' class='checkQ'/></td>";
+                    html +="<td>"+list[i].id+"</td>";
+                    html +="<td>"+list[i].name+"</td>";
+                    html +="<td>"+list[i].createTime+"</td>";
+                    html +="<td>"+list[i].roleId+"</td>";
+                    html +="<td><a onclick='userEdit("+list[i].id+")'>编辑</a>&nbsp;&nbsp<a onclick='delUser("+list[i].id+")'>删除</a></td>";
+                    html +="</tr>";
+                }
+                $("#tableBody").html(html);
+            }
+        }
+    }
+
+/**************************************分页完***********************/
+
+
+/********************************
+ * 删除用户事件
+ * **************************************/
     function delUser(id){
         console.log(id);
         layer.confirm('是否要删除'+id+'用户？', {
             btn: ['确认', '取消'] //可以无限个按钮
         }, function(index, layero){
-            //确定事件
+            $.ajax({
+                type:"get",
+                url:"${pageContext.request.contextPath}/deleteUserByOne.do?id="+id,
+                success:function(data){
+                    console.log(data);
+                    if(data=="success"){
+                        layer.closeAll();
+                        window.location.reload();
+                    }
+                },
+                error:function(){
+                    layer.msg("删除失败！",{icon: 2});
+                }
+            })
             console.log("删除成功!");
         }, function(index){
             //取消事件
         });
     }
-
+    //*******************************表格中的全选事件***********************************/
     //全选事件
     $("#seleAll").change(function () {
         var checkList=document.getElementsByName("userSele");
@@ -201,6 +287,26 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         }
     });
 
+
+    $("#tableBody").on('click','.checkQ',function(){
+        var checkArr=$(".checkQ");
+        var flag=0;//标记：标记是否全选，如果全选为0，没有全选为1
+        for(var i=0;i<checkArr.length;i++){
+            console.log(checkArr[i].checked);
+            if(!checkArr[i].checked){
+                flag=1;
+            }
+        }
+        //判断标记：是否为全选来控制全选按钮的选择
+        if(flag==1){
+            $("#seleAll").prop("checked",false);
+        }else if(flag==0){
+            $("#seleAll").prop("checked",true);
+        }
+    });
+
+
+    /**********************************验证*******************************************/
     //    姓名的验证
     $("#userName").blur(function(){
         if(uNameReg($("#userName").val())){
@@ -243,6 +349,10 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             $(".userRoleReg").css("display","none");
         }
     });
+    /**********************************************************************************/
+
+
+
 
     //确定按钮的事件
     $("#submit").click(function(){
@@ -261,7 +371,12 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 
 
-
+//***********************编辑事件******************************/
+    function userEdit(id){
+        $(".qzqModal").fadeToggle();
+        console.log("qzq");
+        console.log(id);
+    }
 
 
 

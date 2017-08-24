@@ -184,7 +184,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                      html +="<td>"+list[i].terminalModel+"</td>";
                      html +="<td>"+list[i].position+"</td>";
                      html +="<td>"+list[i].status+"</td>";
-                     html +="<td><a href='#'>查看详情</td>";
+                     html +="<td><a href='${pageContext.request.contextPath}/gotoDeviceMonitorDetail.do?uuid="+list[i].uuid+"'>查看详情</td>";
                      html +="</tr>";
                 }
                 $("#tableBody").html(html);

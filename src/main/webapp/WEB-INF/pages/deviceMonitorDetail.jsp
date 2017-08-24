@@ -35,7 +35,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <div class="mB0 row">
             <i class="glyphicon glyphicon-home"></i>&nbsp;
             <ul class="breadcrumb breadcrumbQ">
-                <li><a href="deviceMonitor.jsp">设备监控</a></li>
+                <li><a href="${pageContext.request.contextPath}/gotoDeviceMonitor.do">设备监控</a></li>
                 <li class="active">设备详情</li>
             </ul>
         </div>

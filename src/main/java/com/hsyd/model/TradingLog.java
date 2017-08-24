@@ -8,7 +8,7 @@ public class TradingLog {
     private Integer id;
     private Integer transactionId;          //交易序列号
     private Integer patientCard;            //就诊卡号
-    private Integer beInHospital;           //住院号
+    private Integer beInHospitalNum;           //住院号
     private String uuid;
     private Integer payType;                //交易方式 0：现金 1：支付宝 2：微信 3：医保卡 4：就诊卡 5：银联
     private String trading;                 //交易业务
@@ -41,12 +41,12 @@ public class TradingLog {
         this.patientCard = patientCard;
     }
 
-    public Integer getBeInHospital() {
-        return beInHospital;
+    public Integer getBeInHospitalNum() {
+        return beInHospitalNum;
     }
 
-    public void setBeInHospital(Integer beInHospital) {
-        this.beInHospital = beInHospital;
+    public void setBeInHospitalNum(Integer beInHospitalNum) {
+        this.beInHospitalNum = beInHospitalNum;
     }
 
     public String getUuid() {

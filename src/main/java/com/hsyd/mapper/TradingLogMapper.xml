@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hsyd.dao.TradingLogMapper" >
+
+    <resultMap id="BaseResultMap" type="com.hsyd.model.TradingLog" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="transaction_id" property="transactionId" jdbcType="INTEGER" />
+        <result column="patient_card" property="patientCard" jdbcType="INTEGER" />
+        <result column="be_in_hospital_num" property="beInHospitalNum" jdbcType="INTEGER" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="pay_type" property="payType" jdbcType="INTEGER" />
+        <result column="trading" property="trading" jdbcType="VARCHAR" />
+        <result column="trading_money" property="tradingMoney" jdbcType="VARCHAR"/>
+        <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP"/>
+        <result column="trading_status" property="tradingStatus" jdbcType="INTEGER"/>
+        <result column="error_info" property="errorInfo" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <sql id="base_column">
+        id,transaction_id,patient_card,be_in_hospital_num,uuid,pay_type,trading,trading_money,trading_time,trading_status,error_info
+    </sql>
+
+    <select id="selectTotal" parameterType="com.hsyd.utils.PageUtil" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM a_trading_log
+        WHERE 1 = 1
+        <if test="tradingLog != null and tradingLog != '' and tradingLog.patientCard != null and tradingLog.patientCard != ''">
+            AND patient_card LIKE N'%' #{tradingLog.patientCard} '%'
+        </if>
+        <if test="tradingLog != null and tradingLog != '' and tradingLog.patientCard != null and tradingLog.patientCard != ''">
+            AND pay_type LIKE N'%' #{tradingLog.payType} '%'
+        </if>
+        <if test="searchModel.startTime != null and searchModel.startTime != '' ">
+            and trading_time <![CDATA[ >= ]]> #{searchModel.startTime}
+        </if>
+        <if test="searchModel.endTime != null and searchModel.endTime != '' ">
+            and trading_time <![CDATA[ < ]]> #{searchModel.endTime}
+        </if>
+    </select>
+
+    <select id="selectTradingLogList" parameterType="com.hsyd.utils.PageUtil" resultMap="BaseResultMap">
+        SELECT <include refid="base_column" />
+        FROM a_trading_log
+        WHERE 1 = 1
+        <if test="tradingLog != null and tradingLog != '' and tradingLog.patientCard != null and tradingLog.patientCard != ''">
+            AND patient_card LIKE N'%' #{tradingLog.patientCard} '%'
+        </if>
+        <if test="tradingLog != null and tradingLog != '' and tradingLog.patientCard != null and tradingLog.patientCard != ''">
+            AND pay_type LIKE N'%' #{tradingLog.payType} '%'
+        </if>
+        <if test="searchModel.startTime != null and searchModel.startTime != '' ">
+            and trading_time <![CDATA[ >= ]]> #{searchModel.startTime}
+        </if>
+        <if test="searchModel.endTime != null and searchModel.endTime != '' ">
+            and trading_time <![CDATA[ < ]]> #{searchModel.endTime}
+        </if>
+        ORDER BY trading_time DESC
+        limit #{start}, #{pageSize}
+    </select>
+
+</mapper>

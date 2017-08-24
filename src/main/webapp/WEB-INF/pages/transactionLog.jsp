@@ -42,7 +42,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <!-- 搜索栏 -->
         <div class="row mB20">
             <div class="searchTitleQ">
-                终端管理
+                交易日志
             </div>
             <div class="boxQ">
                 <div class="col-xs-6">

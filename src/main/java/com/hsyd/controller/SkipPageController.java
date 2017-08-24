@@ -109,4 +109,10 @@ public class SkipPageController {
         return modelAndView;
     }
 
+    @RequestMapping("/gotoTransactionLog")
+    public Object gotoTransactionLog(ModelAndView modelAndView){
+        modelAndView.setViewName("transactionLog");
+        return modelAndView;
+    }
+
 }
