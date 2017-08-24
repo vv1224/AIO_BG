@@ -36,7 +36,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <div class="mB0 row">
             <i class="glyphicon glyphicon-home"></i>&nbsp;
             <ul class="breadcrumb breadcrumbQ">
-                <li class="active">终端管理</li>
+                <li class="active">交易日志</li>
             </ul>
         </div>
         <!-- 搜索栏 -->
@@ -47,8 +47,29 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             <div class="boxQ">
                 <div class="col-xs-6">
                     <div class="form-group">
-                        <label for="patientId" class="qzq_tab mR10">终端编号:</label>
-                        <input type="number" class="form-control disInlineB w200" id="patientId" maxlength="10"/>
+                        <label for="cardId" class="qzq_tab mR10">就诊卡号:</label>
+                        <input type="number" class="form-control disInlineB w200" id="cardId" maxlength="10"/>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="transactionWay" class="qzq_tab mR10">交易方式:</label>
+                        <select name="transactionWay" id="transactionWay" class="form-control disInlineB w200">
+                            <option value="0">现金支付</option>
+                            <option value="1">支付宝支付</option>
+                            <option value="2">微信支付</option>
+                            <option value="3">银行卡支付</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group"  style="display: inline-block">
+                        <label for="qzqInpstart" class="qzq_tab mR10">选择日期:</label>
+                        <input class="form-control disInlineB w200" value="" id="qzqInpstart" type="text" placeholder="请选择开始日期" readonly="readonly"/>
+                    </div>
+                    <div class="form-group" style="display: inline-block">
+                        <label for="qzqInpend" class="qzq_tab mR10">至</label>
+                        <input class="form-control disInlineB w200" value="" id="qzqInpend" type="text" placeholder="请选择结束日期" readonly="readonly"/>
                     </div>
                 </div>
                 <div class="col-xs-6">
@@ -61,7 +82,6 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         </div>
         <!--搜索栏完-->
         <div class="boxQ row">
-            <a href="${pageContext.request.contextPath}/gotoDeviceAdd.do" type="button" class="btn btn-success mB20"> <i class="glyphicon glyphicon glyphicon-plus"></i> 新增</a>
             <!-- 查询列表-->
             <div class="row mT10">
                 <div class="table-responsive">
@@ -69,27 +89,30 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                         <thead>
                             <th>选择</th>
                             <th>序号</th>
+                            <th>交易号</th>
+                            <th>就诊卡号</th>
+                            <th>住院号</th>
                             <th>终端编号</th>
-                            <th>终端IP</th>
-                            <th>终端型号</th>
-                            <th>物理位置</th>
-                            <th>状态</th>
-                            <th>操作</th>
+                            <th>交易方式</th>
+                            <th>交易业务</th>
+                            <th>交易金额</th>
+                            <th>交易时间</th>
+                            <th>交易状态</th>
+                            <th>错误信息</th>
                         </thead>
                         <tbody id="tableBody">
                             <tr>
-                                <td><input type="checkbox" name="device"/></td>
+                                <td><input type="checkbox" name="transaction" class="checkQ"/></td>
                                 <td>1</td>
                                 <td>123456789</td>
-                                <td>192.168.0.1</td>
+                                <td>8888888</td>
                                 <td>XTcB1243</td>
-                                <td>门诊大厅</td>
-                                <td>停用</td>
-                                <td>
-                                    <a onclick="qzqCloseModal()">查看</a>
-                                    <a onclick="qzqCloseEditModal()">编辑</a>
-                                    <a onclick="delDevice(1)">删除</a>
-                                </td>
+                                <td>现金</td>
+                                <td>住院</td>
+                                <td>1298.0</td>
+                                <td>2007-08-08</td>
+                                <td>完成</td>
+                                <td>-</td>
                             </tr>
                         </tbody>
                     </table>
@@ -98,7 +121,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 <div class="form-group">
                     <input id="seleAll" type="checkbox"/>
                     <label for="seleAll" class="verticalM">全选</label>
-                    <a href="#" class="btn btn-warning mL20"><i class="fa fa-trash-o fa-lg"></i>批量删除</a>
+                    <a href="#" class="btn btn-warning mL20"><i class="fa  fa-share-square-o  fa-lg"></i>导出报表</a>
                 </div>
             </div>
 
@@ -129,261 +152,6 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
     <jsp:include page="footer.jsp"></jsp:include>
 </footer>
 
-<!--查看模态框-->
-<div class="qzqModal">
-    <div class="pB10 qzq_ModalForm">
-        <span class="qzqCloseModal" onclick="qzqCloseModal()">×</span>
-        <h5 class="h5">终端信息：</h5>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label for="deviceState" class="col-sm-3 control-label">终端状态：</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="deviceState" readonly value="启用">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceId" class="col-sm-3 control-label">终端编号：</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="deviceId" readonly value="111222">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceIp" class="col-sm-3 control-label">终端IP：</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="deviceIp" readonly value="192.168.0.1">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceMAC" class="col-sm-3 control-label">MAC地址：</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="deviceMAC" readonly value="DADISKijsaidf">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceType" class="col-sm-3 control-label">终端类型：</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="deviceType" readonly value="自主挂号缴费机">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceAddr" class="col-sm-3 control-label">终端地址：</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="deviceAddr" readonly value="门诊">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="personName" class="col-sm-3 control-label">联系人：</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="personName" readonly value="张山">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="personTel" class="col-sm-3 control-label">联系人电话：</label>
-                <div class="col-sm-6">
-                    <input type="tel" class="form-control" id="personTel" readonly value="15033333333">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="" class="col-sm-3 control-label">终端功能：</label>
-                <div class="col-sm-6 borderL">
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="createCard"/>
-                            <label for="createCard">建卡</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="cashAdd"/>
-                            <label for="cashAdd">现金充值</label>
-                        </div>
-                    </div>
-
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="backAdd"/>
-                            <label for="backAdd">银联充值</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="todayRegister"/>
-                            <label for="todayRegister">当日挂号</label>
-                        </div>
-                    </div>
-
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="appointmentRegister"/>
-                            <label for="appointmentRegister">预约挂号</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="appointmentGetNum"/>
-                            <label for="appointmentGetNum">预约取号</label>
-                        </div>
-                    </div>
-
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="printReport"/>
-                            <label for="printReport">打印报告</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="checkSurplusMoney"/>
-                            <label for="checkSurplusMoney">查询余额</label>
-                        </div>
-                    </div>
-
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="getMoney"/>
-                            <label for="getMoney">缴费</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="selectAll"/>
-                            <label for="selectAll">全选</label>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="form-group textC">
-                <a href="javascript:;" onclick="qzqCloseModal()"  class="btn btn-success w100">确定</a>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!--编辑模态框-->
-<div class="qzqModalEdit">
-    <div class="pB10 qzq_ModalForm">
-        <span class="qzqCloseModal" onclick="qzqCloseEditModal()">×</span>
-        <h5 class="h5">终端信息：</h5>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label for="deviceStateEdit" class="col-sm-3 control-label">终端状态：</label>
-                <div class="col-sm-9">
-                    <select class="form-control w250 disInlineB" id="deviceStateEdit">
-                        <option value="1">启用</option>
-                        <option value="2">停用</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceIdEdit" class="col-sm-3 control-label">终端编号：</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control w250 disInlineB" id="deviceIdEdit" maxlength="10" value="111222">
-                    <span class="regQ deviceIdEditReg"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceIpEdit" class="col-sm-3 control-label">终端IP：</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control w250 disInlineB" id="deviceIpEdit" value="192.168.0.1">
-                    <span class="regQ deviceIpEditReg"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceMACEdit" class="col-sm-3 control-label">MAC地址：</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control w250 disInlineB" id="deviceMACEdit" value="DADISKijsaidf">
-                    <span class="regQ deviceMACEditReg"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceTypeEdit" class="col-sm-3 control-label">终端类型：</label>
-                <div class="col-sm-9">
-                    <select class="form-control w250 disInlineB" id="deviceTypeEdit">
-                        <option value="1">自助挂号缴费机</option>
-                        <option value="2">自助打印机</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="deviceAddrEdit" class="col-sm-3 control-label">终端地址：</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control w250 disInlineB" id="deviceAddrEdit" value="门诊">
-                    <span class="regQ deviceAddrEditReg"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="personNameEdit" class="col-sm-3 control-label">联系人：</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control w250 disInlineB" id="personNameEdit" value="张山">
-                    <span class="regQ personNameEditReg"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="personTelEdit" class="col-sm-3 control-label">联系人电话：</label>
-                <div class="col-sm-9">
-                    <input type="tel" class="form-control w250 disInlineB" id="personTelEdit" value="15033333333">
-                    <span class="regQ personTelEditReg"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="" class="col-sm-3 control-label">终端功能：</label>
-                <div class="col-sm-6 borderL">
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="createCardEdit" name="deviceEdit"/>
-                            <label for="createCardEdit">建卡</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="cashAddEdit" name="deviceEdit"/>
-                            <label for="cashAddEdit">现金充值</label>
-                        </div>
-                    </div>
-
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="backAddEdit" name="deviceEdit"/>
-                            <label for="backAddEdit">银联充值</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="todayRegisterEdit" name="deviceEdit"/>
-                            <label for="todayRegisterEdit">当日挂号</label>
-                        </div>
-                    </div>
-
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="appointmentRegisterEdit" name="deviceEdit"/>
-                            <label for="appointmentRegisterEdit">预约挂号</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="appointmentGetNumEdit" name="deviceEdit"/>
-                            <label for="appointmentGetNumEdit">预约取号</label>
-                        </div>
-                    </div>
-
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="printReportEdit" name="deviceEdit"/>
-                            <label for="printReportEdit">打印报告</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="checkSurplusMoneyEdit" name="deviceEdit"/>
-                            <label for="checkSurplusMoneyEdit">查询余额</label>
-                        </div>
-                    </div>
-
-                    <div class="row-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="getMoneyEdit" name="deviceEdit"/>
-                            <label for="getMoneyEdit">缴费</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="checkbox" id="seleAllEdit"/>
-                            <label for="seleAllEdit">全选</label>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="form-group textC">
-                <a id="submitEdit" class="btn btn-success w100">确定</a>
-                <a href="javascript:;" onclick="qzqCloseEditModal()" class="btn btn-warning w100">取消</a>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 <script src="js/jquery-2.2.3.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -393,11 +161,69 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <script src="js/page/page.js"></script>
 
 <script>
+    /**搜索框*/
+    +function(){
+        var sDate,eDate;
+        // 日历
+        jeDate({
+            dateCell : "#qzqInpstart",//isinitVal:true,
+            format : "YYYY-MM-DD",//设置日期格式
+            isTime : false, //isClear:false,
+            minDate : "2014-09-19 00:00:00",//设置最小时间
+            choosefun: function(val){
+                sDate=val;
+                if(eDate!=undefined && sDate>eDate){
+                    layer.msg("时间范围有误，请重新选择！",{icon: 2});
+                    $("#qzqInpstart").val("");
+                    sDate=0;
+                    $("#qzqInpstart").focus();
+                }
+            },
+            clearfun:function(val) {
+                sDate=0;
+            }
+        });
+        jeDate({
+            dateCell : "#qzqInpend",//isinitVal:true,
+            format : "YYYY-MM-DD",//设置日期格式
+            isTime : false, //isClear:false,
+            minDate : "2014-09-19 00:00:00",//设置最小时间
+            choosefun: function(val){
+                eDate=val;
+                console.log(val);
+                if(sDate>eDate){
+                    layer.msg("时间范围有误，请重新选择！",{icon: 2});
+                    $("#qzqInpend").val("");
+                    eDate=undefined;
+                    $("#qzqInpend").focus();
+                }
+            },
+            clearfun:function(val) {
+                eDate=undefined;
+            }
+        });
+    }();
+
+
+
+
     /* *****************分页****************************** */
     // [请设置请求参数]...
     var pageIndex = "1";
     var pageSize = 5;//每页条数
+    var patientCard="";//就诊卡号
+    var payType="";//交易类型
+    var startTime="";
+    var endTime="";
     var pageCount;
+
+    $("#search").click(function(){
+        patientCard=$("#cardId").val();
+        payType=$("#transactionWay option:selected").val();
+        startTime=$("#qzqInpstart").val();
+        endTime=$("#qzqInpend").val();
+        showall("first");
+    })
 
     // [初始化页面]...
     showall("first");
@@ -411,9 +237,13 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             dataType: 'json',
             data:{
                 "pageIndex":pageIndex,
-                "pageSize":pageSize
+                "pageSize":pageSize,
+                "patientCard":patientCard,
+                "payType":payType,
+                "startTime":startTime,
+                "endTime":endTime
             },
-            url:"${pageContext.request.contextPath}/selectMonitorInfo.do",
+            url:"${pageContext.request.contextPath}/selectTradingLogList.do",
             success: show,
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 //var actionName = "/user/selectRegisterUser.do";
@@ -441,11 +271,11 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         $("#allPageNumber").html("共" + pageCount + "页");
         $("#currentPage").html("").append(pageIndex);
         if (message == "nodata") {
-            $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+            $("#tableBody").append("<tr><td colspan='12'>抱歉，暂无数据！</td></tr>");
         } else if (message == "success") {
             //console.log(list);
             if (list == null || list.length <= 0) {
-                $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+                $("#tableBody").append("<tr><td colspan='12'>抱歉，暂无数据！</td></tr>");
                 return false;
             }
             if (list != null && list.length > 0) {
@@ -453,32 +283,19 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 for (var i = 0; i < list.length; i++) {
                     console.log(list[i]);
                     // 操作
-
-//                <tr>
-//                    <td><input type="checkbox" name="device"/></td>
-//                        <td>3</td>
-//                        <td>123456789</td>
-//                        <td>192.168.0.1</td>
-//                    <td>XTcB1243</td>
-//                    <td>门诊大厅</td>
-//                    <td>停用</td>
-//                    <td>
-//                    <a onclick="qzqCloseModal()">查看</a>
-//                        <a onclick="qzqCloseEditModal()">编辑</a>
-//                        <a onclick="delDevice(3)">删除</a>
-//                    </td>
-//                    </tr>
-
-
                     html +="<tr>";
-                    html +="<td><input type='checkbox' name='device' class='checkQ'/></td>";
+                    html +="<td><input type='checkbox' name='transaction' class='checkQ'/></td>";
                     html +="<td>"+list[i].id+"</td>";
+                    html +="<td>"+list[i].transactionId+"</td>";
+                    html +="<td>"+list[i].patientCard+"</td>";
+                    html +="<td>"+list[i].beInHospitalNum+"</td>";
                     html +="<td>"+list[i].uuid+"</td>";
-                    html +="<td>"+list[i].ip+"</td>";
-                    html +="<td>"+list[i].terminalModel+"</td>";
-                    html +="<td>"+list[i].position+"</td>";
-                    html +="<td>"+list[i].status+"</td>";
-                    html +="<td><a onclick='deviceDetail("+list[i].uuid+")'>查看</a>&nbsp;&nbsp;<a onclick='deviceEdit("+list[i].uuid+")'>编辑</a>&nbsp;&nbsp<a onclick='delDevice("+list[i].uuid+")'>删除</a></td>";
+                    html +="<td>"+list[i].payType+"</td>";
+                    html +="<td>"+list[i].trading+"</td>";
+                    html +="<td>"+list[i].tradingMoney+"</td>";
+                    html +="<td>"+list[i].tradingTime+"</td>";
+                    html +="<td>"+list[i].tradingStatus+"</td>";
+                    html +="<td>"+list[i].errorInfo+"</td>";
                     html +="</tr>";
                 }
                 $("#tableBody").html(html);
@@ -535,7 +352,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
     //全选事件
     //表格中的
     $("#seleAll").change(function () {
-        var checkList=document.getElementsByName("device");
+        var checkList=document.getElementsByName("transaction");
         console.log(checkList);
         if($(this).is(':checked')){
             console.log("选中了");
@@ -670,7 +487,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 
 //侧边栏加样式
-    sideOn("终端管理");
+    sideOn("交易日志");
 
 
 

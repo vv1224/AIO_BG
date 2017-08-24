@@ -56,34 +56,34 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                                 <th>出错时间</th>
                                 <th>出错信息</th>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>123456789</td>
-                                <td>192.168.0.1</td>
-                                <td>身份证读卡器</td>
-                                <td>正常</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>123456789</td>
-                                <td>192.168.0.1</td>
-                                <td>密码键盘</td>
-                                <td>异常</td>
-                                <td>2017/6/23 11:22:08</td>
-                                <td>串口打开失败</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>123456789</td>
-                                <td>192.168.0.1</td>
-                                <td>凭条打印</td>
-                                <td>异常</td>
-                                <td>2017/6/23 11:22:08</td>
-                                <td>缺纸</td>
-                            </tr>
+                            <tbody id="tableBody">
+                                <tr>
+                                    <td>1</td>
+                                    <td>123456789</td>
+                                    <td>192.168.0.1</td>
+                                    <td>身份证读卡器</td>
+                                    <td>正常</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>123456789</td>
+                                    <td>192.168.0.1</td>
+                                    <td>密码键盘</td>
+                                    <td>异常</td>
+                                    <td>2017/6/23 11:22:08</td>
+                                    <td>串口打开失败</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>123456789</td>
+                                    <td>192.168.0.1</td>
+                                    <td>凭条打印</td>
+                                    <td>异常</td>
+                                    <td>2017/6/23 11:22:08</td>
+                                    <td>缺纸</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -109,6 +109,37 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 
 <script>
+    +function(){
+        var search=window.location.search;//?uuid=1001;
+        var uuid=search.split("=")[1];//1001;
+        $.ajax({
+            type:"get",
+            url:"${pageContext.request.contextPath}/selectMonitorDetail.do?uuid="+uuid,
+            dataType:'json',
+            success:function(data){
+                var html="";
+                console.log(data);
+                for(var i=0;i<data.length;i++){
+                    html +="<tr>";
+                    html +="<td>"+(i+1)+"</td>";
+                    html +="<td>"+data[i].uuid+"</td>";
+                    html +="<td>"+data[i].ip+"</td>";
+                    html +="<td>"+data[i].equipmentName+"</td>";
+                    html +="<td>"+data[i].status+"</td>";
+                    if(data[i].errorTime==null){data[i].errorTime="-"}
+                    html +="<td>"+data[i].errorTime+"</td>";
+                    if(data[i].errorInfo==null){data[i].errorInfo="-"}
+                    html +="<td>"+data[i].errorInfo+"</td>";
+                    html +="</tr>";
+                }
+                $("#tableBody").html(html);
+            },
+            error:function(){
+                layer.msg("数据请求失败！",{icon: 2});
+            }
+
+        })
+    }();
 
     //侧边栏加载样式
     sideOn("设备监控");

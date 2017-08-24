@@ -229,7 +229,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                     html +="<td>"+list[i].name+"</td>";
                     html +="<td>"+list[i].createTime+"</td>";
                     html +="<td>"+list[i].roleId+"</td>";
-                    html +="<td><a onclick='userEdit("+list[i].id+")'>编辑</a>&nbsp;&nbsp<a onclick='delUser("+list[i].id+")'>删除</a></td>";
+                    html +='<td><a onclick="userEdit(\' '+list[i].name+'\')">编辑</a>&nbsp;&nbsp<a onclick="delUser('+list[i].id+')">删除</a></td>';
                     html +="</tr>";
                 }
                 $("#tableBody").html(html);
@@ -372,10 +372,25 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 
 //***********************编辑事件******************************/
-    function userEdit(id){
+    function userEdit(name){
         $(".qzqModal").fadeToggle();
         console.log("qzq");
-        console.log(id);
+        console.log(name+"");
+        $.ajax({
+            type:"post",
+            url:"${pageContext.request.contextPath}/selectUserList.do",
+            data:{
+                "name":name,
+            },
+            dataType:"json",
+            success:function(data){
+                console.log("ajahah sa");
+                console.log(data);
+            },
+            error:function(){
+                console.log("abc");
+        }
+        })
     }
 
 

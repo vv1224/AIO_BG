@@ -283,7 +283,32 @@ $("#submit").click(function(){
     }else if($(".deviceIdReg").css("display")=="inline-block"||$(".deviceIpReg").css("display")=="inline-block"||$(".deviceMACReg").css("display")=="inline-block"||$(".deviceTypeReg").css("display")=="inline-block"||$(".deviceAddrReg").css("display")=="inline-block"||$(".personNameReg").css("display")=="inline-block"||$(".personTelReg").css("display")=="inline-block"){
         layer.msg("请正确填写内容！",{icon: 2});
     }else{
-        layer.msg("添加成功！",{icon: 1});
+        $.ajax({
+            type:"post",
+            url:"${pageContext.request.contextPath}/insertTerminal.do",
+            data:{
+                "ip":$("#deviceIp").val(),
+                "termainalModel":$("#deviceType option:selected").val(),//终端型号
+                "position":$("#deviceAddr").val(),
+                "status":$("#deviceState option:selected").val(),
+                "macAddress":$("#deviceMAC").val(),
+                "linkMan":$("#personName").val(),
+                "linkPhone":$("#personTel").val()
+            },
+            dataType:"json",
+            success:function(data){
+                console.log(data);
+                if(data=="success"){
+                    layer.msg("添加成功！",{icon: 1});
+                }
+            },
+            error:function(){
+                layer.msg("提交失败！",{icon: 2});
+            }
+        })
+
+
+
     }
 })
 

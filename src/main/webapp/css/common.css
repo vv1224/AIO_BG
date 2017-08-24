@@ -1,5 +1,8 @@
 /*模块化样式*/
 
+.container{
+    width:100%;
+}
 body{
     background-color: #F5F5F5;
 }

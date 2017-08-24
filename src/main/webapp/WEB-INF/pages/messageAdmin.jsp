@@ -80,7 +80,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                                 <td>设备故障！</td>
                                 <td>2017/07/12</td>
                                 <td>
-                                    <a href="messageDetail.jsp">查看详情</a>
+                                    <a href="${pageContext.request.contextPath}/gotoMessageDetail.do">查看详情</a>
                                     <a onclick="delMessage(3)">删除</a>
                                 </td>
                             </tr>

@@ -17,4 +17,7 @@ public interface UserService {
 
     //修改用户
     void updateUser(User user);
+
+    //查询单个用户
+    User selectUserByOne(Integer id);
 }

@@ -1,7 +1,5 @@
 package com.hsyd.controller;
 
-import com.hsyd.dao.UserMapper;
-import com.hsyd.model.Terminal;
 import com.hsyd.model.User;
 import com.hsyd.service.UserService;
 import com.hsyd.utils.PageUtil;
@@ -153,4 +151,22 @@ public class UserController {
         return message;
     }
 
+    /**
+     * 查询单个用户
+     * @param id
+     * @return
+     */
+    @RequestMapping("/selectUserByOne")
+    public String selectUserByOne(@RequestParam("id") Integer id){
+        String message = "";
+        try {
+            User user = userService.selectUserByOne(id);
+            message = "success";
+        }catch (Exception e){
+            message = "error";
+            e.printStackTrace();
+            return  message;
+        }
+        return message;
+    }
 }
