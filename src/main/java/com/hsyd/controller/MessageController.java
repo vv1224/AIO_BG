@@ -1,6 +1,7 @@
 package com.hsyd.controller;
 
 import com.hsyd.model.Message;
+import com.hsyd.model.MessagePojo;
 import com.hsyd.service.MessageService;
 import com.hsyd.utils.PageUtil;
 import net.sf.json.JSONArray;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -47,5 +49,36 @@ public class MessageController {
         }
     }
 
+    /**
+     * 查询详情信息
+     * @param uuid
+     * @return
+     */
+    @RequestMapping("/selectMessageInfo")
+    @ResponseBody
+    public Object selectMessageInfo(@RequestParam("uuid") String uuid){
+
+        MessagePojo messagePojo = new MessagePojo();
+        try {
+            messagePojo = messageService.selectMessageInfo(uuid);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return messagePojo;
+    }
+
+    @RequestMapping("deleteMessageByUuid")
+    public String deleteMessageByUuid(@RequestParam("uuid") String uuid){
+        String message = "";
+
+        try {
+            messageService.deleteMessageByUuid(uuid);
+            message = "success";
+        }catch (Exception e){
+            message = "error";
+            return message;
+        }
+        return message;
+    }
 
 }

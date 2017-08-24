@@ -2,6 +2,7 @@ package com.hsyd.service.impl;
 
 import com.hsyd.dao.MessageMapper;
 import com.hsyd.model.Message;
+import com.hsyd.model.MessagePojo;
 import com.hsyd.service.MessageService;
 import com.hsyd.utils.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,17 @@ public class MessageServiceImpl implements MessageService {
             e.printStackTrace();
         }
         return pageUtil;
+    }
+
+    @Override
+    public MessagePojo selectMessageInfo(String uuid) {
+        MessagePojo messagePojo = new MessagePojo();
+        messagePojo = messageMapper.selectMessageInfo(uuid);
+        return messagePojo;
+    }
+
+    @Override
+    public void deleteMessageByUuid(String uuid) {
+        messageMapper.deleteMessageByUuid(uuid);
     }
 }

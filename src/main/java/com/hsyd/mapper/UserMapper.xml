@@ -54,7 +54,7 @@
         WHERE id = #{id}
     </update>
 
-    <select id="selectUserByOne" parameterType="java.lang.String" resultType="com.hsyd.model.User">
+    <select id="selectUserByOne" parameterType="java.lang.Integer" resultType="com.hsyd.model.User">
         select * from a_user
         WHERE id = #{id}
     </select>

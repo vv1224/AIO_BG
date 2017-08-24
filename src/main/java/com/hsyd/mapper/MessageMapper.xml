@@ -21,4 +21,18 @@
         limit #{start}, #{pageSize}
     </select>
 
+    <!-- 查询信息详情 -->
+    <select id="selectMessageInfo" parameterType="java.lang.String" resultType="com.hsyd.model.MessagePojo">
+        SELECT a.uuid,a.message_content AS messageContent,b.ip,b.mac_address AS macAddress,b.terminal_model AS terminalModel,b.position,b.link_man AS linkMan,b.link_phone AS linkPhone
+        FROM a_message a
+        LEFT JOIN a_terminal b
+        ON a.uuid = b.uuid
+        WHERE a.uuid = #{uuid}
+    </select>
+
+    <delete id="deleteMessageByUuid" parameterType="java.lang.String">
+        DELETE FROM a_message
+        WHERE uuid = #{uuid}
+    </delete>
+
 </mapper>

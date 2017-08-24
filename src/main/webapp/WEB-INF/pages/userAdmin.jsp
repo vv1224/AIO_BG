@@ -229,7 +229,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                     html +="<td>"+list[i].name+"</td>";
                     html +="<td>"+list[i].createTime+"</td>";
                     html +="<td>"+list[i].roleId+"</td>";
-                    html +='<td><a onclick="userEdit(\' '+list[i].name+'\')">编辑</a>&nbsp;&nbsp<a onclick="delUser('+list[i].id+')">删除</a></td>';
+                    html +='<td><a onclick="userEdit('+list[i].id+')">编辑</a>&nbsp;&nbsp<a onclick="delUser('+list[i].id+')">删除</a></td>';
                     html +="</tr>";
                 }
                 $("#tableBody").html(html);
@@ -350,47 +350,77 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         }
     });
     /**********************************************************************************/
-
-
-
-
-    //确定按钮的事件
-    $("#submit").click(function(){
+    //确定按钮的事件(编辑用户)
+    function submit(id){
         if($(".uPwdReg").css("display")=="inline-block"||
-                $(".userNameReg").css("display")=="inline-block"
-                ||$(".uPwdOkReg").css("display")=="inline-block"||$(".userRoleReg").css("display")=="inline-block"){
+            $(".userNameReg").css("display")=="inline-block"
+            ||$(".uPwdOkReg").css("display")=="inline-block"||$(".userRoleReg").css("display")=="inline-block"){
             layer.msg("请正确填写内容！",{icon: 2});
         }else if($("#uPwd").val()==""||
-                $("#userName").val()==""
-                ||$("#uPwdOk").val()==""||$("#userRole option:selected").val()==-1){
+            $("#userName").val()==""
+            ||$("#uPwdOk").val()==""||$("#userRole option:selected").val()==-1){
             layer.msg("请将内容填写完整！",{icon: 2});
         }else{
-            layer.msg("提交成功！",{icon: 1});
+            $.ajax({
+                type:'post',
+                url:'${pageContext.request.contextPath}/updateUser.do',
+                data:{
+                    "id":id,
+                    "name":$("#userName").val(),
+                    "password":$("#uPwd").val(),
+                    "rePassword":$("#uPwdOk").val(),
+                    "roleId":$("#userRole").val()
+                },
+                dataType:'json',
+                success:function(data){
+                    console.log("aaaaa");
+                    console.log(data);
+                    if(data=="success"){
+                        layer.msg("提交成功！",{icon: 1});
+                        setTimeout(function(){
+                            $(".qzqModal").fadeToggle();
+                            window.location.reload();
+                        },2000);
+                    }
+                },
+                error:function(){
+                    console.log("数据方式失败！");
+                }
+            });
+
         }
-    })
+    }
+
 
 
 
 //***********************编辑事件******************************/
-    function userEdit(name){
+    function userEdit(id){
         $(".qzqModal").fadeToggle();
         console.log("qzq");
-        console.log(name+"");
+        console.log(id);
         $.ajax({
             type:"post",
-            url:"${pageContext.request.contextPath}/selectUserList.do",
+            url:"${pageContext.request.contextPath}/selectUserByOne.do",
             data:{
-                "name":name,
+                "id":id,
             },
             dataType:"json",
             success:function(data){
-                console.log("ajahah sa");
-                console.log(data);
+                if(data.roleId==""){data.roleId=2}
+                $("#userName").val(data.name);
+                $("#uPwd").val(data.password);
+                $("#uPwdOk").val(data.password);
+                $("#userRole").val(data.roleId);
+                $("#submit").click(function(){
+                    submit(id);
+                })
             },
             error:function(){
-                console.log("abc");
+                console.log("数据请求失败！");
         }
-        })
+        });
+
     }
 
 

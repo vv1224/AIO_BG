@@ -380,7 +380,7 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <configuration>
           <path>/AIO_BG</path>
-          <port>8066</port>
+          <port>8065</port>
           <server>tomcat</server>
           <uriEncoding>UTF-8</uriEncoding>
         </configuration>

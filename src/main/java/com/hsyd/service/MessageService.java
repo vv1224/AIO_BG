@@ -1,5 +1,6 @@
 package com.hsyd.service;
 
+import com.hsyd.model.MessagePojo;
 import com.hsyd.utils.PageUtil;
 
 /**
@@ -7,4 +8,10 @@ import com.hsyd.utils.PageUtil;
  */
 public interface MessageService {
     PageUtil selectMessageList(Integer pageIndex, Integer pageSize);
+
+    //查询详情
+    MessagePojo selectMessageInfo(String uuid);
+
+    //删除
+    void deleteMessageByUuid(String uuid);
 }

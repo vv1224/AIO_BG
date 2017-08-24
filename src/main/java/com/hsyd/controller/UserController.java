@@ -157,16 +157,18 @@ public class UserController {
      * @return
      */
     @RequestMapping("/selectUserByOne")
-    public String selectUserByOne(@RequestParam("id") Integer id){
+    @ResponseBody
+    public Object selectUserByOne(@RequestParam("id") Integer id){
         String message = "";
+        User user = new User();
         try {
-            User user = userService.selectUserByOne(id);
+            user = userService.selectUserByOne(id);
             message = "success";
         }catch (Exception e){
             message = "error";
             e.printStackTrace();
             return  message;
         }
-        return message;
+        return user;
     }
 }

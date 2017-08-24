@@ -268,7 +268,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             <div class="form-group">
                 <label for="deviceIdEdit" class="col-sm-3 control-label">终端编号：</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control w250 disInlineB" id="deviceIdEdit" maxlength="10" value="111222">
+                    <input type="text" class="form-control w250 disInlineB" id="deviceIdEdit" maxlength="10" value="111222" readonly>
                     <span class="regQ deviceIdEditReg"></span>
                 </div>
             </div>
@@ -501,9 +501,22 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             url:"${pageContext.request.contextPath}/selectMonitorDetail.do",
             success:function(data){
                 console.log(data);
+                data=data[0];
+                if(data.status=="1"){
+                    $("#deviceState").val("启用");
+                }else if(data.status=="2"){
+                    $("#deviceState").val("停用");
+                }
+                $("#deviceId").val(data.uuid);
+                $("#deviceIp").val(data.ip);
+                $("#deviceMAC").val("AjafasoifierISJ2154");
+                $("#deviceType").val(0);
+                $("#deviceAddr").val("大厅");
+                $("#personName").val("张三");
+                $("#personTel").val("1503655555");
             },
             error:function(){
-                console.log("abd");
+                layer.msg("数据请求失败！",{icon: 1});
             }
         })
     }
@@ -513,9 +526,72 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 
     /****------------------编辑设备-------------------------**/
-    function deviceEdit(id){
+    /**验证在下面*/
+    /**请求页面数据*/
+    function deviceEdit(uuId){
         $(".qzqModalEdit").fadeToggle();
-        cosnole.log(id);
+        console.log(uuId);
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data:{
+                "uuid":uuId
+            },
+            url:"${pageContext.request.contextPath}/selectMonitorDetail.do",
+            success:function(data){
+                console.log(data);
+                if(data!=""){
+                    data=data[0];
+                    if(data.status=="1"){
+                        $("#deviceStateEdit").val(1);
+                    }else if(data.status=="2"){
+                        $("#deviceState").val(2);
+                    }
+                    $("#deviceIdEdit").val(data.uuid);
+                    $("#deviceIpEdit").val(data.ip);
+                    $("#deviceMACEdit").val("AjafasoifierISJ2154");
+                    $("#deviceTypeEdit").val(0);
+                    $("#deviceAddrEdit").val("大厅");
+                    $("#personNameEdit").val("张三");
+                    $("#personTelEdit").val("1503655555");
+                    /************编辑中确认按钮的事件**********/
+                    $("#submitEdit").click(function(){
+                        submitEdit(uuId);
+                    })
+                }
+            },
+            error:function(){
+                layer.msg("数据请求失败！",{icon: 1});
+            }
+        });
+    }
+    /**编辑模态框中的确认按钮事件**/
+    function submitEdit(uuId){
+        if($("#deviceIdEdit").val()==""||$("#deviceIpEdit").val()==""||$("#deviceMACEdit").val()==""||$("#deviceTypeEdit").val()==""||$("#deviceAddrEdit").val()==""||$("#personNameEdit").val()==""||$("#personTelEdit").val()==""){
+            layer.msg("请将内容填写完整！",{icon: 7});
+        }else if($(".deviceIdEditReg").css("display")=="inline-block"||$(".deviceIpEditReg").css("display")=="inline-block"||$(".deviceMACEditReg").css("display")=="inline-block"||$(".deviceTypeEditReg").css("display")=="inline-block"||$(".deviceAddrEditReg").css("display")=="inline-block"||$(".personNameEditReg").css("display")=="inline-block"||$(".personTelEditReg").css("display")=="inline-block"){
+            layer.msg("请正确填写内容！",{icon: 2});
+        }else{
+            //layer.msg("添加成功！",{icon: 1});
+            $.ajax({
+                type:"post",
+                url:"${pageContext.request.contextPath}.updateTerminal.do",
+                data:{
+                    "uuid":uuId,
+                    "ip":$("#deviceIpEdit").val(),
+                    "terminalModel":$("#deviceTypeEdit option:selected").val(),
+                    "position":$("#deviceAddrEdit").val()
+                },
+                dataType:"json",
+                success:function(data){
+                    console.log(data);
+                },
+                error:function(){
+                    console.log("数据请求失败！");
+                }
+            })
+        }
+
     }
 
 
@@ -656,16 +732,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         }
     });
 
-    /************编辑中确认按钮的事件**********/
-    $("#submitEdit").click(function(){
-        if($("#deviceIdEdit").val()==""||$("#deviceIpEdit").val()==""||$("#deviceMACEdit").val()==""||$("#deviceTypeEdit").val()==""||$("#deviceAddrEdit").val()==""||$("#personNameEdit").val()==""||$("#personTelEdit").val()==""){
-            layer.msg("请将内容填写完整！",{icon: 7});
-        }else if($(".deviceIdEditReg").css("display")=="inline-block"||$(".deviceIpEditReg").css("display")=="inline-block"||$(".deviceMACEditReg").css("display")=="inline-block"||$(".deviceTypeEditReg").css("display")=="inline-block"||$(".deviceAddrEditReg").css("display")=="inline-block"||$(".personNameEditReg").css("display")=="inline-block"||$(".personTelEditReg").css("display")=="inline-block"){
-            layer.msg("请正确填写内容！",{icon: 2});
-        }else{
-            layer.msg("添加成功！",{icon: 1});
-        }
-    })
+
 
 
 
