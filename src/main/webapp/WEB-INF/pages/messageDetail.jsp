@@ -36,7 +36,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <div class="mB0 row">
             <i class="glyphicon glyphicon-home"></i>&nbsp;
             <ul class="breadcrumb breadcrumbQ">
-                <li><a href="${pageContext.request.contextPath}/gotoUserAdmin.do">消息管理</a></li>
+                <li><a href="${pageContext.request.contextPath}/gotoMessageAdmin.do">消息管理</a></li>
                 <li class="active">消息详情</li>
             </ul>
         </div>
@@ -50,56 +50,56 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 <div class="partOne">
                     <p class="titleQ f16 mB30">详情</p>
                     <div class="form-group row">
-                        <label for="" class="col-xs-4 control-label text-right">终端编号：</label>
+                        <label for="uuId" class="col-xs-4 control-label text-right">终端编号：</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control w300" readonly value="123123" maxlength="20"/>
+                            <input id="uuId" type="text" class="form-control w300" readonly value="123123" maxlength="20"/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-xs-4 control-label text-right">终端IP：</label>
+                        <label for="devIp" class="col-xs-4 control-label text-right">终端IP：</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control w300" readonly value="192.168.1.1" maxlength="20"/>
+                            <input id="devIp" type="text" class="form-control w300" readonly value="192.168.1.1" maxlength="20"/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-xs-4 control-label text-right">MAC地址：</label>
+                        <label for="devMacAddr" class="col-xs-4 control-label text-right">MAC地址：</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control w300" readonly value="ADdikjialasdijaD434" maxlength="20"/>
+                            <input id="devMacAddr" type="text" class="form-control w300" readonly value="ADdikjialasdijaD434" maxlength="20"/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-xs-4 control-label text-right">终端类型：</label>
+                        <label for="devType" class="col-xs-4 control-label text-right">终端类型：</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control w300" readonly value="缴费机器" maxlength="20"/>
+                            <input id="devType" type="text" class="form-control w300" readonly value="缴费机器" maxlength="20"/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-xs-4 control-label text-right">终端地址：</label>
+                        <label for="devPosition" class="col-xs-4 control-label text-right">终端地址：</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control w300" readonly value="门诊大厅" maxlength="20"/>
+                            <input id="devPosition" type="text" class="form-control w300" readonly value="门诊大厅" maxlength="20"/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-xs-4 control-label text-right">联系人：</label>
+                        <label for="linkMan" class="col-xs-4 control-label text-right">联系人：</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control w300" readonly value="二强" maxlength="20"/>
+                            <input id="linkMan" type="text" class="form-control w300" readonly value="二强" maxlength="20"/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-xs-4 control-label text-right">联系人电话：</label>
+                        <label for="linkPhone" class="col-xs-4 control-label text-right">联系人电话：</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control w300" readonly value="15033333333" maxlength="20"/>
+                            <input id="linkPhone" type="text" class="form-control w300" readonly value="15033333333" maxlength="20"/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-xs-4 control-label text-right">故障信息：</label>
+                        <label for="devMessage" class="col-xs-4 control-label text-right">故障信息：</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control w300" readonly value="卡纸状态" maxlength="20"/>
+                            <input id="devMessage" type="text" class="form-control w300" readonly value="卡纸状态" maxlength="20"/>
                         </div>
                     </div>
 
                     <div class="form-group textC row">
-                        <a href="messageAdmin.jsp" class="btn btn-success w100">返回</a>
+                        <a href="${pageContext.request.contextPath}/gotoMessageAdmin.do" class="btn btn-success w100">返回</a>
                     </div>
 
                 </div>
@@ -125,7 +125,29 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 
 <script>
-
+    +function(){
+        var search=window.location.search;//?uuid=1001;
+        var uuid=search.split("=")[1];//1001;
+        $.ajax({
+            type:'get',
+            url:"${pageContext.request.contextPath}/selectMessageInfo.do?uuid="+uuid,
+            success:function(data){
+                console.log(data);
+                //layer.msg("数据请求成功！",{icon: 1});
+                $("#uuId").val(data.uuid);
+                $("#devIp").val(data.ip);
+                $("#devMacAddr").val(data.macAddress);
+                $("#devType").val(data.terminalModel);
+                $("#devPosition").val(data.position);
+                $("#linkMan").val(data.linkMan);
+                $("#linkPhone").val(data.linkPhone);
+                $("#devMessage").val(data.messageContent);
+            },
+            error:function(){
+                layer.msg("数据请求失败！",{icon: 2});
+            }
+        });
+    }();
 
     //侧边栏加载样式
     sideOn("消息管理");

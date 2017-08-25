@@ -49,20 +49,20 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 <div class="partOne">
                     <p class="titleQ f16 mB30">医院基本信息</p>
                     <div class="form-group row">
-                        <label for="" class="col-sm-2 control-label text-right">医院名称：</label>
-                        <div class="col-sm-6">
+                        <label for="" class="col-sm-2 col-xs-12 control-label text-right">医院名称：</label>
+                        <div class="col-sm-6 col-xs-12">
                             <input type="text" class="form-control" maxlength="20"/>
                         </div>
                     </div>
                     <div class="form-group row mT20">
-                        <div class="col-xs-6 imgParent">
+                        <div class="col-sm-6 col-xs-12 imgParent">
                             <label for="" class="col-md-4 col-xs-6 control-label text-right">医院LOGO：</label>
                             <input type="file" class="col-md-8 col-xs-6 file1 mB10" placeholder="选择文件" value=""/>
                             <div class="imgBox logoBox">
                                 <!--<img src=""/>-->
                             </div>
                         </div>
-                        <div class="col-xs-6 imgParent">
+                        <div class="col-sm-6 col-xs-12 imgParent">
                             <label for="" class="col-md-4 col-xs-6 control-label text-right">背景图：</label>
                             <input type="file" class="col-md-8 col-xs-6 file2 mB10" placeholder="选择文件" value=""/>
                             <div class="imgBox">

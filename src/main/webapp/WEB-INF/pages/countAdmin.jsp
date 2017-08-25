@@ -45,14 +45,14 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 统计管理
             </div>
             <div class="boxQ">
-                <div class="col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label for="qzqInpstart" class="qzq_tab mR10">选择日期:</label>
                         <input class="form-control disInlineB w200" value="" id="qzqInpstart" type="text" placeholder="请选择开始日期" readonly="readonly"/>
                     </div>
                 </div>
 
-                <div class="col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <!-- 查询重置按钮 -->
                     <a id="search" type="button" class="btn btn-success"> <i class="glyphicon glyphicon-search"></i> 查询</a>
                     <a class="btn btn-warning mL10" href="javascript:window.location.reload();"> <i class="glyphicon glyphicon-refresh"></i>重置</a>
@@ -78,7 +78,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                         </thead>
                         <tbody id="tableBody">
                             <tr>
-                                <td><input type="checkbox" class="checkQ"  name="message"/></td>
+                                <td><input type="checkbox" class="checkQ"  name="count"/></td>
                                 <td>1</td>
                                 <td>2017/7/4</td>
                                 <td>12222</td>
@@ -89,7 +89,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                                 <td>63212</td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="checkQ" name="message"/></td>
+                                <td><input type="checkbox" class="checkQ" name="count"/></td>
                                 <td>2</td>
                                 <td>2017/7/5</td>
                                 <td>12332</td>
@@ -100,7 +100,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                                 <td>63902</td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" class="checkQ" name="message"/></td>
+                                <td><input type="checkbox" class="checkQ" name="count"/></td>
                                 <td>3</td>
                                 <td>2017/7/6</td>
                                 <td>12348</td>
@@ -119,6 +119,26 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                     <label for="seleAll" class="verticalM">全选</label>
                     <a href="#" class="btn btn-success mL20"><i class="fa fa-cloud-download fa-lg"></i>导出报表</a>
                 </div>
+
+
+
+                <!--new分页-->
+                <div id="qzq_fy" id="pagination-sv">
+                    <ul class="pagination">
+                        <li id="firstPage" class="qzq_firstPage">首页</li>
+                        <li id="upPage">上一页</li>
+                        <li id="currentPage" class="active">1</li>
+                        <li id="nextPage">下一页 </li>
+                        <li id="lastPage">尾页</li>
+                        <li id="allPageNumber" class="qzq_totalPage sjm_widthPage">共1页</li>
+                        <li id="inputPart" class="qzq_fy_search">
+                            <input type="tel" id="wherePage" min="1" class="form-control qzq_input">
+                            <button class="gobtn btn qzq_gobtn" id="goToPage">跳转</button>
+                        </li>
+                    </ul>
+                </div>
+
+
             </div>
 
         </div>
@@ -136,6 +156,8 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <script src="js/layer/layer.js"></script>
 <script src="js/jedate/jedate.js"></script>
 <script src="js/common.js"></script>
+<script src="js/page/page.js"></script>
+
 
 
 <script>
@@ -149,9 +171,115 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
     });
 }();
 
+/* *****************分页****************************** */
+// [请设置请求参数]...
+var pageIndex = "1";
+var pageSize = 5;//每页条数
+var startTime="";//搜索的传的值
+var pageCount;
+
+// [初始化页面]...
+showall("first");
+
+
+$("#search").click(function(){
+    startTime=$("#qzqInpstart").val();
+    showall("first");
+});
+
+// [发送请求请配置好参数和请求地址]...
+function sendAjax() {
+    //发送ajax
+    $.ajax({//后台搜索所有log信息
+        type: 'post',
+        dataType: 'json',
+        data:{
+            "pageIndex":pageIndex,
+            "pageSize":pageSize,
+            "startTime":startTime
+        },
+        url:"${pageContext.request.contextPath}/selectMonitorInfo.do",
+        success: show,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            //var actionName = "/user/selectRegisterUser.do";
+            //excepinfoShow(XMLHttpRequest, textStatus, errorThrown,actionName);
+            console.log("数据库连接失败!");
+        }
+    });//end ajax
+
+}
+
+// [请处理响应数据]...
+function show(json) {
+    $("#tableBody").html("");
+    $(".otherPage").remove();
+    $("#currentPage").remove();
+    console.log(json);
+    var pageUtil = json.pageUtil;
+    pageUtil = pageUtil[0];
+    var list = pageUtil.resultList;
+    var message = json.message;
+    pageCount = pageUtil.pageCount;
+    pageIndex = pageUtil.pageIndex;
+    pageSize=pageUtil.pageSize;
+    $(getStr(createPageBtn(pageIndex, pageCount), pageIndex)).insertAfter($("#upPage"));
+    $("#allPageNumber").html("共" + pageCount + "页");
+    $("#currentPage").html("").append(pageIndex);
+    if (message == "nodata") {
+        $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+    } else if (message == "success") {
+        //console.log(list);
+        if (list == null || list.length <= 0) {
+            $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+            return false;
+        }
+        if (list != null && list.length > 0) {
+            var html="";
+            for (var i = 0; i < list.length; i++) {
+                console.log(list[i]);
+                // 操作
+
+                /*
+                <tr>
+                    <td><input type="checkbox" class="checkQ" name="count"/></td>
+                    <td>3</td>
+                    <td>2017/7/6</td>
+                    <td>12348</td>
+                    <td>23484</td>
+                    <td>4</td>
+                    <td>7</td>
+                    <td>23793</td>
+                    <td>63312</td>
+                </tr>
+                */
+
+                html +="<tr>";
+                html +="<td><input type='checkbox' name='count' class='checkQ'/></td>";
+                html +="<td>"+list[i].id+"</td>";
+                html +="<td>"+list[i].uuid+"</td>";
+                html +="<td>"+list[i].ip+"</td>";
+                html +="<td>"+list[i].terminalModel+"</td>";
+                html +="<td>"+list[i].position+"</td>";
+                html +="<td>"+list[i].status+"</td>";
+                html +="<td><a onclick='deviceDetail("+list[i].uuid+")'>查看</a>&nbsp;&nbsp;<a onclick='deviceEdit("+list[i].uuid+")'>编辑</a>&nbsp;&nbsp<a onclick='delDevice("+list[i].uuid+")'>删除</a></td>";
+                html +="</tr>";
+            }
+            $("#tableBody").html(html);
+        }
+    }
+}
+
+/**************************************分页完***********************/
+
+
+
+
+
+
+
 //全选事件
-$("#seleAll").change(function () {
-    var checkList=document.getElementsByName("message");
+$("#seleAll").change(function() {
+    var checkList=document.getElementsByName("count");
     console.log(checkList);
     if($(this).is(':checked')){
         console.log("选中了");

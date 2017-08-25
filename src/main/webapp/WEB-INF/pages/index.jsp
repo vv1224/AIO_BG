@@ -45,13 +45,13 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 终端管理
             </div>
             <div class="boxQ">
-                <div class="col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label for="patientId" class="qzq_tab mR10">终端编号:</label>
                         <input type="number" class="form-control disInlineB w200" id="patientId" maxlength="10"/>
                     </div>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <!-- 查询重置按钮 -->
                     <a id="search" type="button" class="btn btn-success"> <i class="glyphicon glyphicon-search"></i> 查询</a>
                     <a class="btn btn-warning mL10" href="javascript:window.location.reload();"> <i class="glyphicon glyphicon-refresh"></i>重置</a>
@@ -397,11 +397,17 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
     // [请设置请求参数]...
     var pageIndex = "1";
     var pageSize = 5;//每页条数
+    var uuid="";//搜索的传的值
     var pageCount;
 
     // [初始化页面]...
     showall("first");
 
+
+    $("#search").click(function(){
+        uuid=$("#patientId").val();
+        showall("first");
+    });
 
     // [发送请求请配置好参数和请求地址]...
     function sendAjax() {
@@ -411,7 +417,8 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             dataType: 'json',
             data:{
                 "pageIndex":pageIndex,
-                "pageSize":pageSize
+                "pageSize":pageSize,
+                "uuid":uuid
             },
             url:"${pageContext.request.contextPath}/selectMonitorInfo.do",
             success: show,
@@ -516,7 +523,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 $("#personTel").val("1503655555");
             },
             error:function(){
-                layer.msg("数据请求失败！",{icon: 1});
+                layer.msg("数据请求失败！",{icon: 2});
             }
         })
     }
@@ -608,6 +615,23 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             btn: ['确认', '取消'] //可以无限个按钮
         }, function(index, layero){
             //确定事件
+            $.ajax({
+                type:"post",
+                url:"${pageContext.request.contextPath}/deleteTerminal.do",
+                data:{
+                    uuid:id,
+                },
+                success:function(data){
+                    console.log(data);
+                    if(data=="success"){
+                        layer.close(index);
+                        window.location.reload();
+                    }
+                },
+                error:function(){
+                    layer.msg("删除失败！",{icon: 2});
+                }
+            })
             console.log("删除成功!");
         }, function(index){
             //取消事件

@@ -45,13 +45,13 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 交易日志
             </div>
             <div class="boxQ">
-                <div class="col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label for="cardId" class="qzq_tab mR10">就诊卡号:</label>
                         <input type="number" class="form-control disInlineB w200" id="cardId" maxlength="10"/>
                     </div>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label for="transactionWay" class="qzq_tab mR10">交易方式:</label>
                         <select name="transactionWay" id="transactionWay" class="form-control disInlineB w200">
