@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <%
-String path = request.getContextPath();
-String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <html lang="zh-CN">
 <head lang="en">
@@ -66,50 +66,50 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 <div class="table-responsive">
                     <table class='table table-bordered table-hover table-striped qzq_table'>
                         <thead>
-                            <th>选择</th>
-                            <th>序号</th>
-                            <th>日期</th>
-                            <th>现金总额</th>
-                            <th>银联总额</th>
-                            <th>办卡总额</th>
-                            <th>挂号总数</th>
-                            <th>缴费总额</th>
-                            <th>打印报告总数</th>
+                        <th>选择</th>
+                        <th>序号</th>
+                        <th>日期</th>
+                        <th>现金总额</th>
+                        <th>银联总额</th>
+                        <th>办卡总额</th>
+                        <th>挂号总数</th>
+                        <th>缴费总额</th>
+                        <th>打印报告总数</th>
                         </thead>
                         <tbody id="tableBody">
-                            <tr>
-                                <td><input type="checkbox" class="checkQ"  name="count"/></td>
-                                <td>1</td>
-                                <td>2017/7/4</td>
-                                <td>12222</td>
-                                <td>10000</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>63099</td>
-                                <td>63212</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="checkQ" name="count"/></td>
-                                <td>2</td>
-                                <td>2017/7/5</td>
-                                <td>12332</td>
-                                <td>10300</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>66799</td>
-                                <td>63902</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="checkQ" name="count"/></td>
-                                <td>3</td>
-                                <td>2017/7/6</td>
-                                <td>12348</td>
-                                <td>23484</td>
-                                <td>4</td>
-                                <td>7</td>
-                                <td>23793</td>
-                                <td>63312</td>
-                            </tr>
+                        <tr>
+                            <td><input type="checkbox" class="checkQ"  name="count"/></td>
+                            <td>1</td>
+                            <td>2017/7/4</td>
+                            <td>12222</td>
+                            <td>10000</td>
+                            <td>5</td>
+                            <td>6</td>
+                            <td>63099</td>
+                            <td>63212</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="checkQ" name="count"/></td>
+                            <td>2</td>
+                            <td>2017/7/5</td>
+                            <td>12332</td>
+                            <td>10300</td>
+                            <td>5</td>
+                            <td>6</td>
+                            <td>66799</td>
+                            <td>63902</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="checkQ" name="count"/></td>
+                            <td>3</td>
+                            <td>2017/7/6</td>
+                            <td>12348</td>
+                            <td>23484</td>
+                            <td>4</td>
+                            <td>7</td>
+                            <td>23793</td>
+                            <td>63312</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -161,115 +161,116 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 
 
 <script>
-+function(){
-    // 日历
-    jeDate({
-        dateCell : "#qzqInpstart",//isinitVal:true,
-        format : "YYYY-MM-DD",//设置日期格式
-        isTime : false, //isClear:false,
-        minDate : "2014-09-19 00:00:00",//设置最小时间
-    });
-}();
+    +function(){
+        // 日历
+        jeDate({
+            dateCell : "#qzqInpstart",//isinitVal:true,
+            format : "YYYY-MM-DD",//设置日期格式
+            isTime : false, //isClear:false,
+            minDate : "2014-09-19 00:00:00",//设置最小时间
+        });
+    }();
 
-/* *****************分页****************************** */
-// [请设置请求参数]...
-var pageIndex = "1";
-var pageSize = 5;//每页条数
-var startTime="";//搜索的传的值
-var pageCount;
+    /* *****************分页****************************** */
+    // [请设置请求参数]...
+    var pageIndex = "1";
+    var pageSize = 5;//每页条数
+    var startTime="";//搜索的传的值
+    var pageCount;
 
-// [初始化页面]...
-showall("first");
-
-
-$("#search").click(function(){
-    startTime=$("#qzqInpstart").val();
+    // [初始化页面]...
     showall("first");
-});
 
-// [发送请求请配置好参数和请求地址]...
-function sendAjax() {
-    //发送ajax
-    $.ajax({//后台搜索所有log信息
-        type: 'post',
-        dataType: 'json',
-        data:{
-            "pageIndex":pageIndex,
-            "pageSize":pageSize,
-            "startTime":startTime
-        },
-        url:"${pageContext.request.contextPath}/selectMonitorInfo.do",
-        success: show,
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //var actionName = "/user/selectRegisterUser.do";
-            //excepinfoShow(XMLHttpRequest, textStatus, errorThrown,actionName);
-            console.log("数据库连接失败!");
-        }
-    });//end ajax
 
-}
+    $("#search").click(function(){
+        startTime=$("#qzqInpstart").val();
+        showall("first");
+    });
 
-// [请处理响应数据]...
-function show(json) {
-    $("#tableBody").html("");
-    $(".otherPage").remove();
-    $("#currentPage").remove();
-    console.log(json);
-    var pageUtil = json.pageUtil;
-    pageUtil = pageUtil[0];
-    var list = pageUtil.resultList;
-    var message = json.message;
-    pageCount = pageUtil.pageCount;
-    pageIndex = pageUtil.pageIndex;
-    pageSize=pageUtil.pageSize;
-    $(getStr(createPageBtn(pageIndex, pageCount), pageIndex)).insertAfter($("#upPage"));
-    $("#allPageNumber").html("共" + pageCount + "页");
-    $("#currentPage").html("").append(pageIndex);
-    if (message == "nodata") {
-        $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
-    } else if (message == "success") {
-        //console.log(list);
-        if (list == null || list.length <= 0) {
-            $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
-            return false;
-        }
-        if (list != null && list.length > 0) {
-            var html="";
-            for (var i = 0; i < list.length; i++) {
-                console.log(list[i]);
-                // 操作
-
-                /*
-                <tr>
-                    <td><input type="checkbox" class="checkQ" name="count"/></td>
-                    <td>3</td>
-                    <td>2017/7/6</td>
-                    <td>12348</td>
-                    <td>23484</td>
-                    <td>4</td>
-                    <td>7</td>
-                    <td>23793</td>
-                    <td>63312</td>
-                </tr>
-                */
-
-                html +="<tr>";
-                html +="<td><input type='checkbox' name='count' class='checkQ'/></td>";
-                html +="<td>"+list[i].id+"</td>";
-                html +="<td>"+list[i].uuid+"</td>";
-                html +="<td>"+list[i].ip+"</td>";
-                html +="<td>"+list[i].terminalModel+"</td>";
-                html +="<td>"+list[i].position+"</td>";
-                html +="<td>"+list[i].status+"</td>";
-                html +="<td><a onclick='deviceDetail("+list[i].uuid+")'>查看</a>&nbsp;&nbsp;<a onclick='deviceEdit("+list[i].uuid+")'>编辑</a>&nbsp;&nbsp<a onclick='delDevice("+list[i].uuid+")'>删除</a></td>";
-                html +="</tr>";
+    // [发送请求请配置好参数和请求地址]...
+    function sendAjax() {
+        //发送ajax
+        $.ajax({//后台搜索所有log信息
+            type: 'post',
+            dataType: 'json',
+            data:{
+                "pageIndex":pageIndex,
+                "pageSize":pageSize,
+                "startTime":startTime
+            },
+            url:"${pageContext.request.contextPath}/select.do",
+            success: show,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //var actionName = "/user/selectRegisterUser.do";
+                //excepinfoShow(XMLHttpRequest, textStatus, errorThrown,actionName);
+                console.log("数据库连接失败!");
             }
-            $("#tableBody").html(html);
+        });//end ajax
+
+    }
+
+    // [请处理响应数据]...
+    function show(json) {
+        $("#tableBody").html("");
+        $(".otherPage").remove();
+        $("#currentPage").remove();
+        console.log(json);
+        var pageUtil = json.pageUtil;
+        pageUtil = pageUtil[0];
+        var list = pageUtil.resultList;
+        var message = json.message;
+        pageCount = pageUtil.pageCount;
+        pageIndex = pageUtil.pageIndex;
+        pageSize=pageUtil.pageSize;
+        $(getStr(createPageBtn(pageIndex, pageCount), pageIndex)).insertAfter($("#upPage"));
+        $("#allPageNumber").html("共" + pageCount + "页");
+        $("#currentPage").html("").append(pageIndex);
+        if (message == "nodata") {
+            $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+        } else if (message == "success") {
+            //console.log(list);
+            if (list == null || list.length <= 0) {
+                $("#tableBody").append("<tr><td colspan='8'>抱歉，暂无数据！</td></tr>");
+                return false;
+            }
+            if (list != null && list.length > 0) {
+                var html="";
+                for (var i = 0; i < list.length; i++) {
+                    console.log(list[i]);
+                    // 操作
+
+                    /*
+                     <tr>
+                     <td><input type="checkbox" class="checkQ" name="count"/></td>
+                     <td>3</td>
+                     <td>2017/7/6</td>
+                     <td>12348</td>
+                     <td>23484</td>
+                     <td>4</td>
+                     <td>7</td>
+                     <td>23793</td>
+                     <td>63312</td>
+                     </tr>
+                     */
+
+                    html +="<tr>";
+                    html +="<td><input type='checkbox' name='count' class='checkQ'/></td>";
+                    html +="<td>"+list[i].id+"</td>";
+                    html +="<td>"+list[i].date+"</td>";
+                    html +="<td>"+list[i].cashTotal+"</td>";
+                    html +="<td>"+list[i].unionPay+"</td>";
+                    html +="<td>"+list[i].cardTotal+"</td>";
+                    html +="<td>"+list[i].registerTotal+"</td>";
+                    html +="<td>"+list[i].paymentTotal+"</td>";
+                    html +="<td>"+list[i].reportTotal+"</td>";
+                    html +="</tr>";
+                }
+                $("#tableBody").html(html);
+            }
         }
     }
-}
 
-/**************************************分页完***********************/
+    /**************************************分页完***********************/
 
 
 
@@ -278,47 +279,47 @@ function show(json) {
 
 
 //全选事件
-$("#seleAll").change(function() {
-    var checkList=document.getElementsByName("count");
-    console.log(checkList);
-    if($(this).is(':checked')){
-        console.log("选中了");
-        for(var i=0;i<checkList.length;i++)
-        {
-            checkList[i].checked = 1;
-        }
-    }else{
-        console.log("没选中");
-        for(var i=0;i<checkList.length;i++)
-        {
-            checkList[i].checked = 0;
-        }
-    }
-});
-//表格中的全选事件
-+function(){
-    $("#tableBody").on('click','.checkQ',function(){
-        var checkArr=$(".checkQ");
-        var flag=0;//标记：标记是否全选，如果全选为0，没有全选为1
-        for(var i=0;i<checkArr.length;i++){
-            console.log(checkArr[i].checked);
-            if(!checkArr[i].checked){
-                flag=1;
+    $("#seleAll").change(function() {
+        var checkList=document.getElementsByName("count");
+        console.log(checkList);
+        if($(this).is(':checked')){
+            console.log("选中了");
+            for(var i=0;i<checkList.length;i++)
+            {
+                checkList[i].checked = 1;
+            }
+        }else{
+            console.log("没选中");
+            for(var i=0;i<checkList.length;i++)
+            {
+                checkList[i].checked = 0;
             }
         }
-        //判断标记：是否为全选来控制全选按钮的选择
-        if(flag==1){
-            $("#seleAll").prop("checked",false);
-        }else if(flag==0){
-            $("#seleAll").prop("checked",true);
-        }
-    })
-}();
+    });
+    //表格中的全选事件
+    +function(){
+        $("#tableBody").on('click','.checkQ',function(){
+            var checkArr=$(".checkQ");
+            var flag=0;//标记：标记是否全选，如果全选为0，没有全选为1
+            for(var i=0;i<checkArr.length;i++){
+                console.log(checkArr[i].checked);
+                if(!checkArr[i].checked){
+                    flag=1;
+                }
+            }
+            //判断标记：是否为全选来控制全选按钮的选择
+            if(flag==1){
+                $("#seleAll").prop("checked",false);
+            }else if(flag==0){
+                $("#seleAll").prop("checked",true);
+            }
+        })
+    }();
 
 
 
-//侧边栏加载样式
-sideOn("统计管理");
+    //侧边栏加载样式
+    sideOn("统计管理");
 </script>
 
 
