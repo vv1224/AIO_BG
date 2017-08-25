@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hsyd.dao.StatisticalManagementMapper" >
+
+    <resultMap id="BaseResultMap" type="com.hsyd.model.StatisticalManagement" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="date" property="date" jdbcType="TIMESTAMP" />
+        <result column="cash_total" property="cashTotal" jdbcType="VARCHAR" />
+        <result column="union_pay" property="unionPay" jdbcType="VARCHAR" />
+        <result column="card_total" property="cardTotal" jdbcType="INTEGER" />
+        <result column="register_total" property="registerTotal" jdbcType="INTEGER" />
+        <result column="payment_total" property="paymentTotal" jdbcType="VARCHAR" />
+        <result column="put_report_total" property="putReportTotal" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectTotal" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM a_statistical_management
+    </select>
+
+    <!-- 初始化查询分页 -->
+    <select id="select" parameterType="com.hsyd.utils.PageUtil" resultMap="BaseResultMap">
+        SELECT id,date,cash_total AS cashTotal, union_pay AS unionPay, card_total AS cardTotal, register_total AS registerTotal,
+        payment_total AS paymentTotal, put_report_total AS putReportTotal
+        FROM a_statistical_management
+        <if test="startTime != null and startTime != '' ">
+            WHERE date <![CDATA[ >= ]]> #{startTime}
+            AND date <![CDATA[ <= ]]> #{endTime}
+        </if>
+        ORDER BY date DESC
+        limit #{start},#{pageSize}
+    </select>
+
+</mapper>

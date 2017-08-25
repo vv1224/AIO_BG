@@ -21,6 +21,24 @@ public class PageUtil<T> {
         private Integer endFlag;        // 结束页标记
         private boolean isPage=true;   // 是否分页
         private String uuid;
+        private String startTime;
+        private String endTime;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 
     public TradingLog getTradingLog() {
         return tradingLog;
